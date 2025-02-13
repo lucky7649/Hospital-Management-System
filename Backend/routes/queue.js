@@ -146,7 +146,7 @@ router.get("/appointments/:id", authenticateToken, async (req, res) => {
 
     res.json({ success: true, data: appointments });
   } catch (error) {
-    console.error(`Error fetching appointments for doctor ID ${id}:`, error);
+    console.error(`Error fetching appointments for doctor ID :`, error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });

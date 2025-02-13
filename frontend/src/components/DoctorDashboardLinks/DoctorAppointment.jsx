@@ -268,7 +268,12 @@ const handelAppointmentComplete = async (appointmentId) => {
         </h2>
         <div className="w-full h-[45vh] overflow-y-scroll p-2 bg-gray-100">
           {appointments
-            .filter((appointment) => appointment?.status === "waiting") // Filter appointments with 'waiting' status
+            .filter(
+              (appointment) => 
+                appointment?.status === "waiting" &&
+                appointment?.mode === "in-person"
+              
+            ) // Filter appointments with 'waiting' status
             .map((appointment, idx) => (
               <div
                 key={idx}
@@ -330,11 +335,11 @@ const handelAppointmentComplete = async (appointmentId) => {
       </div>
       {/* Main Content */}
       <div className="flex-1 relative ml-[30%]  p-2">
-        <div className="fixed bottom-0 z-50 right-0 ml-[30%] w-[900px] bg-gray-50  p-2   flex justify-around">
+        <div className="fixed bottom-0 z-50 right-0 ml-[30%] w-[700px] bg-gray-50  p-2   flex justify-around">
           <button
             onClick={() => {
-              handelAppointmentComplete(); 
-              handleRefresh(); 
+              handelAppointmentComplete();
+              handleRefresh();
               handleRefreshAndSendSMS();
             }}
             className="px-4 py-2 bg-green-500 text-white rounded"

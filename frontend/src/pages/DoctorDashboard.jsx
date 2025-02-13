@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import BedChecking from "../components/BedCheking/BedChecking";
+import BedChecking from "../components/CommanComponents/BedChecking";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
 import { IoBedSharp } from "react-icons/io5";
 import DoctorAppointment from "../components/DoctorDashboardLinks/DoctorAppointment";
@@ -12,38 +12,38 @@ const DoctorDashboard = () => {
   const [activeSection, setActiveSection] = useState(
     savedActiveSection || "dashboard"
   );
-const [doctor, setDoctor] = useState([]);
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState(null);
+  const [doctor, setDoctor] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-const id = localStorage.getItem("userId");
+  const id = localStorage.getItem("userId");
 
-useEffect(() => {
-  if (!id) {
-    setError("No ID found in localStorage.");
-    setLoading(false);
-    return;
-  }
-
-  const fetchDoctor = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:1000/api/v1/get-staff/${id}`
-      );
-      setDoctor(response.data.data);
-    } catch (err) {
-      setError("Failed to fetch doctor data.");
-    } finally {
+  useEffect(() => {
+    if (!id) {
+      setError("No ID found in localStorage.");
       setLoading(false);
+      return;
     }
-  };
 
-  fetchDoctor();
-}, [id]);
+    const fetchDoctor = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:1000/api/v1/get-staff/${id}`
+        );
+        setDoctor(response.data.data);
+      } catch (err) {
+        setError("Failed to fetch doctor data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctor();
+  }, [id]);
   const renderContent = () => {
     switch (activeSection) {
       case "doctorOverview":
-        return <DoctorOverview doctor={ doctor} />;
+        return <DoctorOverview doctor={doctor} />;
 
       case "check-bed-availability":
         return <BedChecking />;
@@ -58,7 +58,7 @@ useEffect(() => {
   }, [activeSection]);
 
   return (
-    <div className="flex w-full h-[85vh] fixed bg-gray-100">
+    <div className="flex flex-col lg:flex-row  w-full h-[85vh] ">
       {/* Collapsible Sidebar */}
       <aside className="w-64 bg-white p-4 shadow-md transition-all duration-300">
         <div className="text-blue-500 font-semibold text-2xl text-center mb-6">

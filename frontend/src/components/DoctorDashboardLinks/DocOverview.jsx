@@ -1,6 +1,6 @@
 import React from "react";
 import TopAdminDash from "../AdminDashbordLinks/AdminComponents/TopAdminDash";
-import Calendar from "../Calendar/Calendar";
+import Calendar from "../CommanComponents/Calendar";
 import WorkingHoursChart from "../AdminDashbordLinks/AdminComponents/Chart";
 
 const DoctorOverview = ({ doctor }) => {
