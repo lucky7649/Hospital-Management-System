@@ -118,7 +118,9 @@ const AddStaff = lazy(() =>
   import("../components/AdminDashbordLinks/AddStaff")
 );
 const AddRoom = lazy(() => import("../components/AdminDashbordLinks/AddRoom"));
-const BedChecking = lazy(() => import("../components/BedCheking/BedChecking"));
+const BedChecking = lazy(() =>
+  import("../components/CommanComponents/BedChecking")
+);
 
 const AdminDashboard = () => {
   const savedActiveSection = localStorage.getItem("activeSection");
@@ -186,7 +188,7 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row px-4 lg:px-32 py-4 w-full h-[85vh] fixed">
+    <div className="flex flex-col lg:flex-row  w-full h-[85vh] fixed">
       <aside
         className={`${
           isSidebarCollapsed ? "w-16" : "w-64"

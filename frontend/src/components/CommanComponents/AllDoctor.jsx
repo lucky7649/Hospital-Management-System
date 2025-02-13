@@ -34,7 +34,7 @@
 // export default AllDoctor;
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import DoctorCard from "../DoctorCard/DoctorCard";
+import DoctorCard from "../patientsComponents/DoctorCard";
 
 const AllDoctor = () => {
   const [data, setData] = useState([]);

@@ -1,6 +1,6 @@
 import './App.css';
-import Footer from './components/Footer/Footer';
-import Navbar from './components/Navbar/Navbar';
+import Footer from "./components/CommanComponents/Footer";
+import Navbar from "./components/CommanComponents/Navbar";
 import AllDoctors from './pages/AllDoctors';
 import BookAppointment from './pages/BookAppointment';
 import Home from './pages/Home';
@@ -8,9 +8,9 @@ import { Routes, Route } from 'react-router-dom';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Profile from './pages/Profile';
-import DoctorProfile from './components/DoctorsProfile/DoctorProfile';
-import BedOccupancy from './components/BedCheking/BedChecking';
-import BedDetails from './components/BedDetails/BedDetails';
+import DoctorProfile from "./components/DoctorDashboardLinks/DoctorProfile";
+import BedOccupancy from "./components/CommanComponents/BedChecking";
+import BedDetails from "./components/CommanComponents/BedDetails";
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { authActions } from './store/auth';
@@ -18,8 +18,8 @@ import { Toaster } from "react-hot-toast";
 import PatientDashboard from './pages/PatientsDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import DoctorDashboard from "./pages/DoctorDashboard";
-import ForgetPassword from './components/Forgot Password/forgetPassword';
-import ResetPassword from './components/Forgot Password/resetPassword';
+import ForgetPassword from "./components/CommanComponents/forgetPassword";
+import ResetPassword from "./components/CommanComponents/resetPassword";
 
 function App() {
 

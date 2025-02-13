@@ -6,7 +6,7 @@ import { AiOutlineHome, AiOutlineLogin, AiOutlineLogout } from "react-icons/ai";
 import { FaStethoscope, FaBed } from "react-icons/fa";
 import { MdOutlineEventNote } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import UserProfile from "../UserAvatar/UserAvatar";
+import UserProfile from "./UserAvatar";
 import { authActions } from "../../store/auth";
 import { FiBell } from "react-icons/fi";
 

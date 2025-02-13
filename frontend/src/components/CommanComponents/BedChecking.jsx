@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { RiRefreshLine } from "react-icons/ri";
@@ -62,7 +61,7 @@ const BedChecking = ({ onRefresh }) => {
   }
 
   return (
-    <div className="w-full h-full  px-4 lg:px-32 py-4 bg-gray-50">
+    <div className="w-full h-full  p-4 bg-gray-50">
       <button
         className="fixed bottom-5 right-5 w-12 h-12 z-20 bg-blue-500 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
         onClick={handleRefresh}
