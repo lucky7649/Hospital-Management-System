@@ -61,9 +61,13 @@ const PatientSchema = new mongoose.Schema({
   prescriptions: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Prescription", 
+      ref: "Prescription",
     },
   ],
+  appointments: {
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Queue" }],
+    default: [],
+  },
   opdQueueStatus: {
     type: String,
     enum: ["waiting", "in-consultation", "completed", "cancelled"],

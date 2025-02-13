@@ -2,6 +2,7 @@ const router = require("express").Router();
 require("dotenv").config();
 const mongoose = require("mongoose");
 const Queue = require("../models/queue");
+const Patient = require("../models/patient");
 const { authenticateToken } = require("./userAuth");
 const Doctor = require("../models/staff");
 const twilio = require("twilio");
@@ -80,20 +81,7 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
       return res.status(404).json({ message: "Doctor not found." });
     }
 
-    // Check if the patient is already in the queue for this doctor
-    // const existingQueue = await Queue.findOne({
-    //   doctorId,
-    //   patientName,
-    //   patientAge,
-    //   status: "waiting",
-    // });
-    // if (existingQueue) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "You are already in the queue for this doctor." });
-    // }
-
-    // Create a new queue entry
+  
     const queueEntry = new Queue({
       doctorId,
       patientId: req.user.id, // Ensure `req.user` is populated by authentication middleware
@@ -110,6 +98,10 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
       priority: false, // Set priority to false by default
     });
 
+     
+  await Patient.findByIdAndUpdate(req.user.id, {
+    $push: { appointments: queueEntry._id },
+  });
     await queueEntry.save();
 
     res
@@ -151,7 +143,7 @@ router.get("/appointments/:id", authenticateToken, async (req, res) => {
   }
 });
 
-router.get("/find-pationt-appointments/:id", authenticateToken, async (req, res) => {
+router.get("/find-patient-appointments/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
 

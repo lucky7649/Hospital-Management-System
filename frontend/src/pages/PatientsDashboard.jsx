@@ -107,10 +107,11 @@ import { IoMdArrowDropright } from "react-icons/io";
 import { IoMdArrowDropleft } from "react-icons/io";
 import Avatar from "react-avatar";
 import axios from "axios";
+import AppointmentsPage from "../components/patientsComponents/appointmentsPage";
 
 // Lazy loading components
-const Dashbord = lazy(() =>
-  import("../components/AdminDashbordLinks/Dashboard")
+const Dashboard = lazy(() =>
+  import("../components/patientsComponents/Patient-Dashboard")
 );
 const Patient = lazy(() => import("../components/AdminDashbordLinks/Patient"));
 const Staff = lazy(() => import("../components/AdminDashbordLinks/Staff"));
@@ -161,9 +162,9 @@ const PatientDashboard = () => {
   const renderContent = () => {
     switch (activeSection) {
       case "dashboard":
-        return <Dashbord />;
-      case "patients":
-        return <Patient />;
+        return <Dashboard user={user} />;
+      case "appointments":
+        return <AppointmentsPage user={user} />;
       case "staff":
         return <Staff />;
       case "add-staff":
@@ -173,13 +174,13 @@ const PatientDashboard = () => {
       case "check-bed-availability":
         return <BedChecking />;
       default:
-        return <Dashbord />;
+        return <Dashboard />;
     }
   };
 
   const navigationItems = [
     { label: "Dashboard", icon: <TbLayoutDashboardFilled />, key: "dashboard" },
-    { label: "Patients", icon: <FaUser />, key: "patients" },
+    { label: "Appointments", icon: <FaUser />, key: "appointments" },
     { label: "Staff List", icon: <HiUsers />, key: "staff" },
     { label: "Add Staff", key: "add-staff", icon: <BsPersonFillAdd /> },
     { label: "Add Rooms", icon: <BsFillHouseAddFill />, key: "add-rooms" },
@@ -191,7 +192,7 @@ const PatientDashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row  w-full h-[85vh] fixed">
+    <div className="flex flex-col lg:flex-row  w-full h-[90vh] fixed">
       {/* Sidebar */}
       <aside
         className={`${

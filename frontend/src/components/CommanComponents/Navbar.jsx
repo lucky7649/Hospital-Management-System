@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserProfile from "./UserAvatar";
 import { authActions } from "../../store/auth";
 import { FiBell } from "react-icons/fi";
+import LanguageSelector from "../GoogleTranslate/languageSelector";
 
 const Navbar = () => {
   const Links = {
@@ -104,6 +105,7 @@ const Navbar = () => {
               </Link>
             ))}
           </div>
+         
           <div className="hidden md:flex gap-6">
             {userRole === "patient" && (
               <Link
@@ -169,6 +171,7 @@ const Navbar = () => {
         >
           Book appointment
         </Link>
+
         {isLoggedIn === false && (
           <Link
             to="/login"

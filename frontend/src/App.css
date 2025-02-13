@@ -35,5 +35,41 @@ body {
 body {
     top: 0px !important;
 }
+ /* Style the dropdown */
+  .goog-te-combo {
+    @apply w-full px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 focus:ring focus:ring-blue-300;
+  }
 
+  /* Style the dropdown arrow */
+  .goog-te-gadget {
+    font-family: inherit !important;
+  }
 
+  /* Hide Google branding */
+  .goog-logo-link,
+  .goog-te-gadget span {
+    display: none !important;
+  }
+
+  /* Adjust dropdown size */
+  .goog-te-combo {
+    font-size: 14px !important;
+    height: 40px !important;
+  }
+  /* Hide Google branding & logo */
+  .goog-logo-link,
+  .goog-te-gadget span,
+  .goog-te-banner-frame,
+  .goog-te-balloon-frame {
+    display: none !important;
+  }
+
+  /* Hide Google Translate pop-up bar */
+  body > .skiptranslate {
+    display: none !important;
+  }
+
+  /* Adjust translation dropdown */
+  .goog-te-combo {
+    @apply w-full px-4 py-2 bg-white border border-gray-300 rounded-lg shadow-sm text-gray-700 focus:ring focus:ring-blue-300;
+  }

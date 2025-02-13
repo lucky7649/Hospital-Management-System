@@ -215,6 +215,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+
 const AppointmentForm = () => {
   const [doctors, setDoctors] = useState([]);
   const [patientName, setPatientName] = useState("");
@@ -295,6 +296,7 @@ const AppointmentForm = () => {
         appointmentData,
         { headers }
       );
+      
       toast.success("Appointment booked successfully!");
       openModal(true);
       handleReset();
@@ -321,6 +323,7 @@ const AppointmentForm = () => {
   };
   return (
     <div className="w-full flex gap-2 px-4 lg:px-32 py-4 h-full">
+  
       <div className="w-1/2 bg-gray-50 rounded-xl p-4">
         <h1 className="text-3xl font-bold text-gray-600 mb-4">
           Book Your <span className="text-blue-500">Appointment </span>– Fast,

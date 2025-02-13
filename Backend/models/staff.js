@@ -97,44 +97,8 @@ const StaffSchema = new mongoose.Schema({
       message: "Qualification is required for doctors",
     },
   },
-  // availability: {
-  //   days: {
-  //     type: [String],
-  //     validate: {
-  //       validator: function (value) {
-  //         // Ensure that the role is 'doctor' and availability days are provided
-  //         if (this.role === "doctor") {
-  //           if (!value || value.length === 0) {
-  //             throw new Error("Availability days are required for doctors");
-  //           }
-  //           // Ensure each day is a valid weekday
-  //           const validDays = [
-  //             "Monday",
-  //             "Tuesday",
-  //             "Wednesday",
-  //             "Thursday",
-  //             "Friday",
-  //             "Saturday",
-  //             "Sunday",
-  //           ];
-  //           for (let day of value) {
-  //             if (!validDays.includes(day)) {
-  //               throw new Error(`${day} is not a valid weekday`);
-  //             }
-  //           }
-  //         }
-  //         return true;
-  //       },
-  //       message: "Availability days are required for doctors",
-  //     },
-  //   },
-  //   timeSlots: [
-  //     {
-  //       start: { type: String, required: true }, // e.g., "09:00 AM"
-  //       end: { type: String, required: true }, // e.g., "01:00 PM"
-  //     },
-  //   ],
-  // },
+
+ 
   registrationNo: {
     type: String,
     unique: true,
@@ -172,6 +136,7 @@ const StaffSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+ 
   updatedAt: {
     type: Date,
     default: Date.now,

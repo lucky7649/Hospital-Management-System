@@ -62,15 +62,15 @@ const QueueSchema = new mongoose.Schema({
     trim: true,
   },
   mode: {
-      type: String,
-      enum: ["online", "in-person"],
-      required: true, 
-    },
-    // You can also add additional fields for tracking appointment time and dates
+    type: String,
+    enum: ["online", "in-person"],
+    required: true,
+  },
+
   appointmentDate: {
-      type: Date,
-      required: true, // Optional: You can set this based on when the appointment is booked
-    },
+    type: Date,
+    required: true, // Optional: You can set this based on when the appointment is booked
+  },
 
   status: {
     type: String,

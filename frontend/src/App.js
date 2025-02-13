@@ -23,6 +23,8 @@ import GoogleTranslate from "./components/GoogleTranslate/GoogleTranslate";
 
 import ForgetPassword from "./components/CommanComponents/forgetPassword";
 import ResetPassword from "./components/CommanComponents/resetPassword";
+import LanguageSelector from './components/GoogleTranslate/languageSelector';
+
 
 
 function App() {
@@ -40,14 +42,13 @@ function App() {
   },[dispatch])
 
   return (
-    <div className=''>
+    <div className="">
       <Toaster />
       <GoogleTranslate />
 
-     
+      
       <Navbar />
       <Routes>
-      
         <Route exact path="/" element={<Home />} />
         <Route path="/all-doctors" element={<AllDoctors />} />
 
