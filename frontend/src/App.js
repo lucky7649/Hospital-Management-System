@@ -18,8 +18,14 @@ import { Toaster } from "react-hot-toast";
 import PatientDashboard from './pages/PatientsDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import DoctorDashboard from "./pages/DoctorDashboard";
+<<<<<<< HEAD
+import ForgetPassword from './components/Forgot Password/forgetPassword';
+import ResetPassword from './components/Forgot Password/resetPassword';
+import GoogleTranslate from "./components/GoogleTranslate/GoogleTranslate";
+=======
 import ForgetPassword from "./components/CommanComponents/forgetPassword";
 import ResetPassword from "./components/CommanComponents/resetPassword";
+>>>>>>> 31680e6051094e569dc847091d404985c396cdbc
 
 function App() {
 
@@ -38,10 +44,12 @@ function App() {
   return (
     <div className=''>
       <Toaster />
+      <GoogleTranslate />
 
      
       <Navbar />
       <Routes>
+      
         <Route exact path="/" element={<Home />} />
         <Route path="/all-doctors" element={<AllDoctors />} />
 

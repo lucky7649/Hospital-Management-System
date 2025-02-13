@@ -1,0 +1,29 @@
+/* Hide Google Translate top bar */
+#goog-gt-tt, .goog-te-banner-frame, .goog-te-balloon-frame {
+    display: none !important;
+}
+
+/* Remove extra padding from body */
+body {
+    top: 0px !important;
+}
+/* Hide the Google Translate frame */
+.goog-te-banner-frame {
+    display: none !important;
+}
+
+/* Hide "Powered by Google" text */
+.goog-logo-link,
+.goog-te-gadget span {
+    display: none !important;
+}
+
+/* Hide floating box */
+.goog-te-gadget-simple {
+    display: none !important;
+}
+
+/* Remove the unnecessary margin shift caused by Google Translate */
+body {
+    top: 0px !important;
+}
