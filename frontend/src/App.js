@@ -20,6 +20,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import DoctorDashboard from "./pages/DoctorDashboard";
 import ForgetPassword from './components/Forgot Password/forgetPassword';
 import ResetPassword from './components/Forgot Password/resetPassword';
+import GoogleTranslate from "./components/GoogleTranslate/GoogleTranslate";
 
 function App() {
 
@@ -38,10 +39,12 @@ function App() {
   return (
     <div className=''>
       <Toaster />
+      <GoogleTranslate />
 
      
       <Navbar />
       <Routes>
+      
         <Route exact path="/" element={<Home />} />
         <Route path="/all-doctors" element={<AllDoctors />} />
 
