@@ -58,9 +58,9 @@ const DoctorDashboard = () => {
   }, [activeSection]);
 
   return (
-    <div className="flex flex-col lg:flex-row  w-full h-[85vh] ">
+    <div className="flex flex-col lg:flex-row  w-full h-[90vh] fixed border-t-2 border-gray-300">
       {/* Collapsible Sidebar */}
-      <aside className="w-64 bg-white p-4 shadow-md transition-all duration-300">
+      <aside className="w-64  bg-white p-4 border-r-2 border-gray-300 shadow-md transition-all duration-300">
         <div className="text-blue-500 font-semibold text-2xl text-center mb-6">
           Doctor Dashboard
         </div>
@@ -100,7 +100,7 @@ const DoctorDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1  overflow-y-auto bg-gray-50 shadow-inner">
+      <main className="flex-1 overflow-y-auto bg-gray-50 shadow-inner">
         <div className="transition-opacity duration-300 ease-in-out">
           {renderContent()}
         </div>

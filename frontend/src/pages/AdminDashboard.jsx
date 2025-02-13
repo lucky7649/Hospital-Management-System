@@ -188,7 +188,7 @@ const AdminDashboard = () => {
   ];
 
   return (
-    <div className="flex flex-col lg:flex-row  w-full h-[85vh] fixed">
+    <div className="flex flex-col lg:flex-row  w-full h-[90vh] fixed">
       <aside
         className={`${
           isSidebarCollapsed ? "w-16" : "w-64"

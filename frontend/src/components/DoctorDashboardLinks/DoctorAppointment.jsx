@@ -16,10 +16,10 @@ const DoctorAppointment = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [notifiedPatients, setNotifiedPatients] = useState(new Set());
+  const [activeTab, setActiveTab] = useState("in-person");
 
   const patientId = selectedPatient?._id;
   const doctorId = localStorage.getItem("userId");
-
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -59,8 +59,7 @@ const DoctorAppointment = () => {
 
   useEffect(() => {
     fetchAppointments();
-    
-  }, []); 
+  }, []);
 
   const handleRefresh = async () => {
     await fetchAppointments(); // Ensure appointments are fresh
@@ -81,55 +80,55 @@ const DoctorAppointment = () => {
     }
   };
 
-const handleRefreshAndSendSMS = async () => {
-  const currentIndex = appointments.findIndex(
-    (appointment) => appointment._id === selectedAppointment
-  );
+  const handleRefreshAndSendSMS = async () => {
+    const currentIndex = appointments.findIndex(
+      (appointment) => appointment._id === selectedAppointment
+    );
 
-  if (currentIndex !== -1 && currentIndex < appointments.length - 1) {
-    const nextAppointment = appointments[currentIndex + 2]; // Get the next appointment
+    if (currentIndex !== -1 && currentIndex < appointments.length - 1) {
+      const nextAppointment = appointments[currentIndex + 2]; // Get the next appointment
 
-    if (nextAppointment) {
-      setSelectedPatient(nextAppointment.patientId);
-      setSelectedAppointment(nextAppointment._id);
+      if (nextAppointment) {
+        setSelectedPatient(nextAppointment.patientId);
+        setSelectedAppointment(nextAppointment._id);
 
-      if (
-        nextAppointment.status === "waiting" &&
-        !notifiedPatients.has(nextAppointment._id)
-      ) {
-        const message = `Hello ${nextAppointment.patientId.name}, your appointment is up. Please proceed to the consultation.`;
-        try {
-          await axios.post("http://localhost:1000/api/v1/send-sms", {
-            phoneNumber: nextAppointment.patientId.phone,
-            message,
-          });
-          console.log("SMS sent to the next patient");
+        if (
+          nextAppointment.status === "waiting" &&
+          !notifiedPatients.has(nextAppointment._id)
+        ) {
+          const message = `Hello ${nextAppointment.patientId.name}, your appointment is up. Please proceed to the consultation.`;
+          try {
+            await axios.post("http://localhost:1000/api/v1/send-sms", {
+              phoneNumber: nextAppointment.patientId.phone,
+              message,
+            });
+            console.log("SMS sent to the next patient");
 
-          // Mark patient as notified
-          setNotifiedPatients(
-            (prevSet) => new Set(prevSet.add(nextAppointment._id))
-          );
-        } catch (error) {
-          console.error("Error sending SMS:", error);
+            // Mark patient as notified
+            setNotifiedPatients(
+              (prevSet) => new Set(prevSet.add(nextAppointment._id))
+            );
+          } catch (error) {
+            console.error("Error sending SMS:", error);
+          }
+        } else if (notifiedPatients.has(nextAppointment._id)) {
+          console.log("SMS already sent to this patient.");
+        } else {
+          console.log("Next patient is not in 'waiting' status. No SMS sent.");
         }
-      } else if (notifiedPatients.has(nextAppointment._id)) {
-        console.log("SMS already sent to this patient.");
       } else {
-        console.log("Next patient is not in 'waiting' status. No SMS sent.");
+        console.log("No valid next appointment found.");
+        setSelectedPatient(null);
+        setSelectedAppointment(null);
       }
     } else {
-      console.log("No valid next appointment found.");
+      console.log(
+        "No next appointment available or selected appointment not found."
+      );
       setSelectedPatient(null);
       setSelectedAppointment(null);
     }
-  } else {
-    console.log(
-      "No next appointment available or selected appointment not found."
-    );
-    setSelectedPatient(null);
-    setSelectedAppointment(null);
-  }
-};
+  };
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -151,7 +150,6 @@ const handleRefreshAndSendSMS = async () => {
     );
   }
 
-
   const formattedDateOfBirth = selectedPatient?.dateOfBirth
     ? new Date(selectedPatient.dateOfBirth).toISOString().split("T")[0]
     : "N/A";
@@ -161,18 +159,15 @@ const handleRefreshAndSendSMS = async () => {
   ).length;
   const totalAppointments = appointments.length;
   const CompletedAppointments = totalAppointments - PendingAppointments; //
-
+  const onlineAppointments = appointments.filter(
+    (appointment) =>
+      appointment?.mode === "online"
+  ).length; // Filter appointments with 'waitin
+const offlineAppointments = appointments.filter(
+  (appointment) => appointment?.mode === "in-person"
+  ).length; 
+  
   const analyticsCards = [
-    {
-      title: "Total Patients",
-      value: totalAppointments,
-
-      icon: <FaUser />,
-      bgColor: "bg-blue-100",
-      iconColor: "text-blue-500",
-
-      borderColor: "border-blue-500",
-    },
     {
       title: "Total Appointments",
       value: totalAppointments,
@@ -182,6 +177,27 @@ const handleRefreshAndSendSMS = async () => {
       iconColor: "text-purple-500",
 
       borderColor: "border-purple-500",
+    },
+    {
+      title: "Online Appointments",
+      value: onlineAppointments,
+
+      icon: <FaUser />,
+      bgColor: "bg-blue-100",
+      iconColor: "text-blue-500",
+
+      borderColor: "border-blue-500",
+    },
+    {
+      title: "In-Person Appointments",
+      value: offlineAppointments,
+
+      icon: <AiFillSchedule />, // Replace with your preferred icon or SVG
+
+      bgColor: "bg-green-100",
+      iconColor: "text-green-500",
+
+      borderColor: "border-green-500",
     },
 
     {
@@ -194,46 +210,34 @@ const handleRefreshAndSendSMS = async () => {
 
       borderColor: "border-orange-500",
     },
-    {
-      title: "Completed Appointments",
-      value: CompletedAppointments,
-
-      icon: <AiFillSchedule />, // Replace with your preferred icon or SVG
-
-      bgColor: "bg-green-100",
-      iconColor: "text-green-500",
-
-      borderColor: "border-green-500",
-    },
   ];
 
-const handelAppointmentComplete = async (appointmentId) => {
-  try {
- const headers = {
-      authorization: `Bearer ${localStorage.getItem("token")}`,
-    };
+  const handelAppointmentComplete = async (appointmentId) => {
+    try {
+      const headers = {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      };
 
-  
-    // Make the API request to update the status of the selected appointment
-    const response = await axios.put(
-      `http://localhost:1000/api/v1/update-appointment/${selectedAppointment}`,
-      { status: "completed" }, // You can send the status here, or just update on the server side
-      { headers }
-    );
+      // Make the API request to update the status of the selected appointment
+      const response = await axios.put(
+        `http://localhost:1000/api/v1/update-appointment/${selectedAppointment}`,
+        { status: "completed" }, // You can send the status here, or just update on the server side
+        { headers }
+      );
 
-    if (response.status === 200) {
-      console.log("Appointment marked as completed");
-      toast.success("Consultation Done!");
-        handleRefresh(); 
-    } else {
-      console.error("Failed to mark appointment as completed");
+      if (response.status === 200) {
+        console.log("Appointment marked as completed");
+        toast.success("Consultation Done!");
+        handleRefresh();
+      } else {
+        console.error("Failed to mark appointment as completed");
+      }
+    } catch (error) {
+      console.error("Error in updating appointment:", error);
     }
-  } catch (error) {
-    console.error("Error in updating appointment:", error);
-  }
-};
+  };
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-gray-100 ">
       {/* Left Sidebar */}
       <div className="w-1/4 bg-gray-50 border-r p-4 overflow-y-auto fixed h-[90vh]">
         {/* Header */}
@@ -263,16 +267,40 @@ const handelAppointmentComplete = async (appointmentId) => {
           ))}
         </div>
 
-        <h2 className="text-xl text-blue-500 font-semibold my-4">
-          Patient Queue
-        </h2>
-        <div className="w-full h-[45vh] overflow-y-scroll p-2 bg-gray-100">
+       
+        <div className="flex space-x-2 items-center justify-between  mt-4 mb-4">
+          <h2 className="text-xl text-blue-500 font-semibold ">
+            Patient Queue
+          </h2>
+          <div className="flex gap-2">
+          <button
+            className={`px-2 py-2 rounded text-sm font-semibold ${
+              activeTab === "in-person"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-600"
+            }`}
+            onClick={() => setActiveTab("in-person")}
+          >
+            In-Person
+          </button>
+          <button
+            className={`px-2 py-2 rounded text-sm font-semibold ${
+              activeTab === "online"
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200 text-gray-600"
+            }`}
+            onClick={() => setActiveTab("online")}
+          >
+            Online
+            </button>
+          </div>
+        </div>
+        <div className="w-full h-[45vh] border-2 rounded-lg border-gray-300 overflow-y-scroll p-2 bg-gray-100">
           {appointments
             .filter(
-              (appointment) => 
+              (appointment) =>
                 appointment?.status === "waiting" &&
-                appointment?.mode === "in-person"
-              
+                appointment?.mode === activeTab
             ) // Filter appointments with 'waiting' status
             .map((appointment, idx) => (
               <div
@@ -298,7 +326,7 @@ const handelAppointmentComplete = async (appointmentId) => {
                         {appointment?.patientId.name || "Unknown"}
                       </h3>
                       <p className="text-sm text-gray-500">
-                        Register: {appointment?.email || "N/A"}
+                        {appointment?.email || "N/A"}
                       </p>
                     </div>
                   </div>
@@ -309,15 +337,26 @@ const handelAppointmentComplete = async (appointmentId) => {
 
                 {/* Status Badge */}
                 <div className="flex items-center justify-between">
-                  <span
-                    className={`px-3 py-1 rounded-lg text-sm font-semibold ${
-                      appointment?.status === "completed"
-                        ? "bg-green-100 text-green-600"
-                        : "bg-yellow-100 text-yellow-600"
-                    }`}
-                  >
-                    {appointment?.status || "Pending"}
-                  </span>
+                  <div className="flex gap-2">
+                    <span
+                      className={`px-3 py-1 rounded-lg text-sm font-semibold ${
+                        appointment?.status === "completed"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-yellow-100 text-yellow-600"
+                      }`}
+                    >
+                      {appointment?.status || "Pending"}
+                    </span>
+                    <span
+                      className={`px-3 py-1 rounded-lg text-sm font-semibold ${
+                        appointment?.mode === "online"
+                          ? "bg-green-100 text-green-600"
+                          : "bg-gray-200  text-gray-600"
+                      }`}
+                    >
+                      {appointment?.mode || "in-person"}
+                    </span>
+                  </div>
 
                   <button
                     onClick={() => {
