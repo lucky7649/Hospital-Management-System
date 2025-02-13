@@ -9,8 +9,16 @@ body {
 }
 /* Hide the Google Translate frame */
 .goog-te-banner-frame {
-    display: none !important;
+    display: none ;
+    
 }
+.VIpgJd-ZVi9od-ORHb{
+    position: fixed;
+    top: -40px;
+    display: none;
+    
+    
+ }
 
 /* Hide "Powered by Google" text */
 .goog-logo-link,
@@ -27,3 +35,5 @@ body {
 body {
     top: 0px !important;
 }
+
+

@@ -26,7 +26,7 @@ const GoogleTranslate = () => {
     }, []);
 
     return (
-        <div className="flex justify-end p-4">
+        <div className=" justify-end p-4 flex">
             <div id="google_translate_element" className="bg-gray-100 px-3 py-2 rounded-md shadow-md"></div>
         </div>
     );
