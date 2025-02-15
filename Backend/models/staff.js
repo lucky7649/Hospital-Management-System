@@ -43,9 +43,8 @@ const StaffSchema = new mongoose.Schema({
     type: String,
     enum: ["doctor", "receptionist", "admin", "nurse", "technician"],
   },
-  avatar: {
+  profileImg: {
     type: String,
-    default: "https://example.com/default-avatar.png",
   },
   OpdNo: {
     type: Number,

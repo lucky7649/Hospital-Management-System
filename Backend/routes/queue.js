@@ -46,6 +46,73 @@ router.post("/send-sms", async (req, res) => {
 
 
 
+// router.post("/book-appointment", authenticateToken, async (req, res) => {
+//   try {
+//     const {
+//       doctorId,
+//       patientName,
+//       patientAge,
+//       gender,
+//       contactNumber,
+//       email,
+//       dateOfBirth,
+//       reasonForVisit,
+//       mode,
+//       appointmentDate,
+//     } = req.body;
+
+//     // Validate input
+//     if (
+//       !doctorId ||
+//       !patientName ||
+//       !patientAge ||
+//       !gender ||
+//       !contactNumber ||
+//       !reasonForVisit ||
+//       !mode ||
+//       !appointmentDate
+//     ) {
+//       return res.status(400).json({ message: "All fields are required." });
+//     }
+
+//     // Check if the doctor exists
+//     const doctor = await Doctor.findById(doctorId);
+//     if (!doctor) {
+//       return res.status(404).json({ message: "Doctor not found." });
+//     }
+
+  
+//     const queueEntry = new Queue({
+//       doctorId,
+//       patientId: req.user.id, // Ensure `req.user` is populated by authentication middleware
+//       patientName,
+//       patientAge,
+//       gender,
+//       contactNumber,
+//       email,
+//       dateOfBirth,
+//       reasonForVisit,
+//       status: "pending",
+//       mode,
+//       appointmentDate,
+//       priority: false, // Set priority to false by default
+//     });
+
+     
+//   await Patient.findByIdAndUpdate(req.user.id, {
+//     $push: { appointments: queueEntry._id },
+//   });
+//     await queueEntry.save();
+
+//     res
+//       .status(201)
+//       .json({ message: "Appointment booked successfully.", queueEntry });
+//   } catch (error) {
+//     console.error("Error booking appointment:", error);
+//     res.status(500).json({ message: "Internal Server Error", error });
+//   }
+// });
+
 router.post("/book-appointment", authenticateToken, async (req, res) => {
   try {
     const {
@@ -57,7 +124,7 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
       email,
       dateOfBirth,
       reasonForVisit,
-      mode,
+      mode, // Online or Offline
       appointmentDate,
     } = req.body;
 
@@ -81,10 +148,16 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
       return res.status(404).json({ message: "Doctor not found." });
     }
 
-  
+    // Generate a roomId only if it's an online appointment
+    let roomId = null;
+    if (mode === "online") {
+      roomId = `${doctorId}-${req.user.id}-${Date.now()}`;
+    }
+
+    // Create a new queue entry (appointment)
     const queueEntry = new Queue({
       doctorId,
-      patientId: req.user.id, // Ensure `req.user` is populated by authentication middleware
+      patientId: req.user.id,
       patientName,
       patientAge,
       gender,
@@ -92,21 +165,25 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
       email,
       dateOfBirth,
       reasonForVisit,
-      status: "waiting",
+      status: "pending",
       mode,
       appointmentDate,
-      priority: false, // Set priority to false by default
+      priority: false,
+      roomId, // Save the roomId for online patients
     });
 
-     
-  await Patient.findByIdAndUpdate(req.user.id, {
-    $push: { appointments: queueEntry._id },
-  });
+    // Save appointment reference in patient's record
+    await Patient.findByIdAndUpdate(req.user.id, {
+      $push: { appointments: queueEntry._id },
+    });
+
+    // Save the queue entry (appointment)
     await queueEntry.save();
 
-    res
-      .status(201)
-      .json({ message: "Appointment booked successfully.", queueEntry });
+    res.status(201).json({
+      message: "Appointment booked successfully.",
+      queueEntry,
+    });
   } catch (error) {
     console.error("Error booking appointment:", error);
     res.status(500).json({ message: "Internal Server Error", error });

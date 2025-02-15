@@ -14,6 +14,7 @@ import axios from "axios";
 import Avatar from "react-avatar";
 import { TbRefresh } from "react-icons/tb";
 import toast from "react-hot-toast";
+import DragDropFileUpload from "../CommanComponents/DropDownFileUpload";
 
 
 const Staff = () => {
@@ -29,13 +30,19 @@ const Staff = () => {
     email: "",
     phone: "",
     role: "",
-    avatar: "",
+    profileImg: "",
     OpdNo: "",
     department: "",
     specialization: "",
 
   });
 
+    const handleFileUpload = (filePath) => {
+      setSelectedStaff({
+        ...selectedStaff,
+        profileImg: filePath,
+      });
+    };
 
    useEffect(() => {
     const fetchDoctors = async () => {
@@ -327,12 +334,12 @@ const closeDeleteModal = () => {
                         >
                           <td className="py-3 px-6">
                             {" "}
-                            <div className="flex items-center space-x-3 cursor-pointer">
+                            <div className="flex items-center space-x-3 cursor-pointer ">
                               <Avatar
                                 name={doctor?.name}
-                                src={doctor?.avatar}
-                                round={true}
-                                size="40"
+                                src={`http://localhost:1000/uploads/${doctor?.profileImg}`}
+                                className="rounded-xl shadow-sm"
+                                size="50"
                               />
                             </div>
                           </td>
@@ -451,9 +458,9 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer">
                               <Avatar
                                 name={receptionist?.name}
-                                src={receptionist?.avatar}
-                                round={true}
-                                size="40"
+                                src={`http://localhost:1000/uploads/${receptionist?.profileImg}`}
+                                className="rounded-xl"
+                                size="50"
                               />
                             </div>
                           </td>
@@ -573,9 +580,9 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer">
                               <Avatar
                                 name={admin?.name}
-                                src={admin?.avatar}
-                                round={true}
-                                size="40"
+                                src={`http://localhost:1000/uploads/${admin?.profileImg}`}
+                                className="rounded-xl"
+                                size="50"
                               />
                             </div>
                           </td>
@@ -637,14 +644,20 @@ const closeDeleteModal = () => {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 z-50 mt-28 h-fit max-h-[70vh]">
+        <div className="fixed inset-0 z-50 bg-gray-900 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 z-50  h-fit max-h-[70vh]">
             <h2 className="text-xl font-bold mb-4 text-gray-700">
               Edit {selectedStaff.type} Details
             </h2>
             <form onSubmit={handleEditStaff}>
               <div className="p-3 w-full h-fit max-h-[50vh] overflow-y-scroll shadow-inner">
-                <div className="flex gap-3">
+                <DragDropFileUpload
+                  onFileUpload={handleFileUpload}
+                  defaultImage={selectedStaff.profileImg}
+                  width="100%"
+                  height="30vh"
+                />
+                <div className="flex gap-3 mt-2">
                   <div className="mb-4 w-3/6">
                     <label className="block text-gray-700 mb-2" htmlFor="name">
                       Name

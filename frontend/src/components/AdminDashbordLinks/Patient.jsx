@@ -14,13 +14,26 @@ import Avatar from "react-avatar";
 import { TbRefresh } from "react-icons/tb";
 import toast from "react-hot-toast";
 import Modal from "react-modal";
+import DragDropFileUpload from "../CommanComponents/DropDownFileUpload";
 
 const Patient = () => {
   const [activeTab, setActiveTab] = useState("Patients");
   const [patientData, setPatientData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedPatient, setSelectedPatient] = useState({
+    name: "",
+    email: "",
+    street: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    country: "",
+    profileImg:"",
+    dateOfBirth: "",
+    status:"",
+    gender: "",
+  });
 
   // Corrected useEffect to use an async function inside
   useEffect(() => {
@@ -42,7 +55,12 @@ const Patient = () => {
     fetchPatients();
   }, []);
 
-  
+    const handleFileUpload = (filePath) => {
+      setSelectedPatient({
+        ...selectedPatient,
+        profileImg: filePath,
+      });
+    };
 
   // Function to refresh the patient list
   const handleRefresh = async () => {
@@ -195,12 +213,12 @@ const Patient = () => {
                           } border-b`}
                         >
                           <td className="py-3 px-6">
-                            <div className="w-10 h-10 rounded overflow-hidden">
+                            <div className=" rounded overflow-hidden">
                               <Avatar
                                 name={patient?.name}
-                                src={patient?.avatarURL}
-                                size="40"
-                                className="w-full h-full object-cover"
+                                src={`http://localhost:1000/uploads/${patient?.profileImg}`}
+                                size="50"
+                                className="rounded-xl"
                               />
                             </div>
                           </td>
@@ -245,16 +263,22 @@ const Patient = () => {
                 {/* Modal Component */}
                 {isModalOpen && (
                   <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 ">
-                    <div className="bg-white rounded-lg shadow-lg w-full max-w-3xl p-6 z-50 mt-28">
+                    <div className="bg-white rounded-lg shadow-lg w-full h-[80vh] overflow-y-scroll max-w-3xl p-6 z-50 ">
                       <h2 className="text-xl font-bold mb-4 text-gray-700">
                         Edit Patient
                       </h2>
                       <form onSubmit={handleEditSubmit}>
+                        <DragDropFileUpload
+                          onFileUpload={handleFileUpload}
+                          defaultImage={selectedPatient.profileImg}
+                          width="100%"
+                          height="30vh"
+                        />
                         {/* Name */}
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 mt-2">
                           <div className="mb-4 w-3/6">
                             <label
-                              className="block text-gray-700 mb-2"
+                              className="block text-gray-500 font-semibold m-2"
                               htmlFor="name"
                             >
                               Name
@@ -277,7 +301,7 @@ const Patient = () => {
                           {/* Email */}
                           <div className="mb-4 w-3/6">
                             <label
-                              className="block text-gray-700 mb-2"
+                              className="block text-gray-500 font-semibold m-2"
                               htmlFor="email"
                             >
                               Email
@@ -301,7 +325,7 @@ const Patient = () => {
                           {/* Age */}
                           <div className="mb-4">
                             <label
-                              className="block text-gray-700 mb-2"
+                              className="block text-gray-500 font-semibold m-2"
                               htmlFor="age"
                             >
                               Age
@@ -324,7 +348,7 @@ const Patient = () => {
                           {/* Gender */}
                           <div className="mb-4">
                             <label
-                              className="block text-gray-700 mb-2"
+                              className="block text-gray-500 font-semibold m-2"
                               htmlFor="gender"
                             >
                               Gender
@@ -350,7 +374,7 @@ const Patient = () => {
                           {/* Weight */}
                           <div className="mb-4">
                             <label
-                              className="block text-gray-700 mb-2"
+                              className="block text-gray-500 font-semibold m-2"
                               htmlFor="weight"
                             >
                               Weight (kg)
@@ -371,7 +395,7 @@ const Patient = () => {
                           </div>
                         </div>
                         {/* Address */}
-                        <label className="block text-gray-700 mb-2">
+                        <label className="block text-gray-500 font-semibold m-2">
                           Address
                         </label>
                         <div className="mb-4">

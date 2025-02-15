@@ -86,7 +86,7 @@ const AddRooms = () => {
               <div className="w-3/6">
                 <label
                   htmlFor="roomNumber"
-                  className="block text-sm font-semibold text-gray-600"
+                  className="block text-sm text-gray-500 font-semibold m-2"
                 >
                   Room Number
                 </label>
@@ -106,7 +106,7 @@ const AddRooms = () => {
               <div className="w-3/6">
                 <label
                   htmlFor="roomType"
-                  className="block text-sm font-semibold text-gray-600"
+                  className="block text-sm text-gray-500 font-semibold m-2"
                 >
                   Room Type
                 </label>
@@ -139,7 +139,7 @@ const AddRooms = () => {
               <div className="w-3/6">
                 <label
                   htmlFor="numberOfBeds"
-                  className="block text-sm font-semibold text-gray-600"
+                  className="block text-sm text-gray-500 font-semibold m-2"
                 >
                   Numbers of Beds
                 </label>
@@ -157,7 +157,7 @@ const AddRooms = () => {
               <div className="w-3/6">
                 <label
                   htmlFor="bedType"
-                  className="block text-sm font-semibold text-gray-600"
+                  className="block text-sm text-gray-500 font-semibold m-2"
                 >
                   Bed Type
                 </label>
@@ -192,7 +192,7 @@ const AddRooms = () => {
             <div className="w-3/6">
               <label
                 htmlFor="floor"
-                className="block text-sm font-semibold text-gray-600"
+                className="block text-sm text-gray-500 font-semibold m-2"
               >
                 Floor
               </label>
@@ -213,7 +213,7 @@ const AddRooms = () => {
             <div className="w-3/6">
               <label
                 htmlFor="department"
-                className="block text-sm font-semibold text-gray-600"
+                className="block text-sm text-gray-500 font-semibold m-2"
               >
                 Department
               </label>

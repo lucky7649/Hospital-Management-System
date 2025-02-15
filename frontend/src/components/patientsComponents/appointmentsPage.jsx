@@ -2,6 +2,9 @@
 import { useState, useEffect } from "react";
 import { FiClock, FiMapPin, FiMoreVertical } from "react-icons/fi";
 import axios from "axios";
+import Avatar from "react-avatar";
+import Calendar from "../CommanComponents/Calendar";
+import { useNavigate } from "react-router-dom";
 
 export default function AppointmentsPage() {
   const [appointments, setAppointments] = useState([]);
@@ -9,7 +12,7 @@ export default function AppointmentsPage() {
   const capitalize = (str) => {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -100,7 +103,9 @@ export default function AppointmentsPage() {
   return (
     <div className="p-6 flex flex-col md:flex-row gap-4 w-full mx-auto">
       {/* Sidebar */}
-      <div className="w-full md:w-1/3 h-screen bg-gray-500 rounded-xl"></div>
+      <div className="w-full md:w-1/3 h-[85vh] p-4 bg-gray-100 rounded-xl">
+        <Calendar />
+      </div>
 
       {/* Main Content */}
       <div className="w-full">
@@ -124,117 +129,130 @@ export default function AppointmentsPage() {
         </div>
 
         {/* Table */}
-        <div className="overflow-x-auto bg-white shadow-lg rounded-lg mt-6">
+        <div className="overflow-x-auto h-[65vh] bg-white shadow-lg rounded-lg mt-6">
           <table className="min-w-full table-auto">
             <thead className="bg-gray-100">
-              <tr className="text-left text-gray-600 text-sm">
+              <tr className="text-left text-gray-500  text-sm">
                 <th className="py-3 px-4">Status</th>
                 <th className="py-3 px-4">Specialty</th>
                 <th className="py-3 px-4">Date and Time</th>
                 <th className="py-3 px-4">Facility</th>
                 <th className="py-3 px-4">Doctor's Name</th>
+                <th className="py-3 px-4">
+                  <FiMoreVertical />
+                </th>
               </tr>
             </thead>
             <tbody>
               {appointments.length > 0 ? (
-                appointments.map((appt, index) => (
-                  <tr key={index} className="border-b hover:bg-gray-50">
-                    {/* Status */}
-                    <td className="py-4 px-4">
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          appt.status.toLowerCase() === "scheduled"
-                            ? "bg-green-100 text-green-600"
-                            : appt.status.toLowerCase() === "pending"
-                            ? "bg-yellow-100 text-yellow-600"
-                            : appt.status.toLowerCase() === "completed"
-                            ? "bg-blue-100 text-blue-400"
-                            : "bg-red-100 text-red-600"
-                        }`}
-                      >
-                        {capitalize(appt.status)}
-                      </span>
-                    </td>
+                [...appointments]
+                  .sort(
+                    (a, b) =>
+                      new Date(b.appointmentDate).getTime() -
+                      new Date(a.appointmentDate).getTime()
+                  ) // Ensure accurate sorting
+                  .map((appt, index) => (
+                    <tr
+                      key={index}
+                      onClick={() => navigate(`/video-call-lobby/${appt.roomId}`)}
+                      className="border-b hover:bg-gray-50"
+                    >
+                      {/* Status */}
+                      <td className="py-4 px-4">
+                        <span
+                          className={`px-3 py-1 rounded-full text-sm font-medium ${
+                            appt.status.toLowerCase() === "scheduled"
+                              ? "bg-green-100 text-green-600"
+                              : appt.status.toLowerCase() === "pending"
+                              ? "bg-yellow-100 text-yellow-600"
+                              : appt.status.toLowerCase() === "completed"
+                              ? "bg-blue-100 text-blue-400"
+                              : "bg-red-100 text-red-600"
+                          }`}
+                        >
+                          {capitalize(appt.status)}
+                        </span>
+                      </td>
 
-                    {/* Specialty */}
-                    <td className="py-4 px-4 text-gray-700">
-                      {appt?.doctor?.specialization || "N/A"}
-                    </td>
+                      {/* Specialty */}
+                      <td className="py-4 px-4 text-gray-700">
+                        {appt?.doctor?.specialization || "N/A"}
+                      </td>
 
-                    {/* Date & Time */}
-                    <td className="py-4 px-4 text-gray-700">
-                      <p className="font-medium">
-                        {formatDate(appt.appointmentDate)}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {formatTime(appt.createdAt)}
-                      </p>
-                    </td>
-
-                    {/* Facility */}
-                    <td className="py-4 px-4 text-gray-700">
-                      <div
-                        className={`font-semibold w-fit px-3 py-1 rounded-xl text-sm ${
-                          appt.mode.toLowerCase() === "online"
-                            ? "bg-green-200  text-green-700"
-                            : "bg-blue-100  text-blue-700"
-                        }`}
-                      >
-                        {appt.mode}
-                      </div>
-                    </td>
-
-                    {/* Doctor */}
-                    <td className="py-4 px-4 flex items-center space-x-3">
-                      <img
-                        src={
-                          appt?.doctor?.image ||
-                          "https://via.placeholder.com/40"
-                        }
-                        alt={appt?.doctor?.name || "Doctor"}
-                        className="w-10 h-10 rounded-full"
-                      />
-                      <div>
+                      {/* Date & Time */}
+                      <td className="py-4 px-4 text-gray-700">
                         <p className="font-medium">
-                          {appt?.doctor?.name || "Unknown"}
+                          {formatDate(appt.appointmentDate)}
                         </p>
                         <p className="text-sm text-gray-500">
-                          {appt?.doctor?.specialization || "N/A"}
+                          {formatTime(appt.createdAt)}
                         </p>
-                      </div>
-                    </td>
-                    <td className="relative">
-                      <button
-                        className="p-2"
-                        onClick={() =>
-                          setOpenDropdown(openDropdown === index ? null : index)
-                        }
-                      >
-                        <FiMoreVertical />
-                      </button>
+                      </td>
 
-                      {/* Dropdown Menu */}
-                      {openDropdown === index && (
-                        <div className="absolute right-0 mt-2 z-50 w-48 bg-white shadow-lg rounded-lg p-2">
-                          {[
-                            "Reschedule booking",
-                            "Request reschedule",
-                            "Edit location",
-                            "Invite people",
-                            "Cancel event",
-                          ].map((action) => (
-                            <button
-                              key={action}
-                              className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
-                            >
-                              {action}
-                            </button>
-                          ))}
+                      {/* Facility */}
+                      <td className="py-4 px-4 text-gray-700">
+                        <div
+                          className={`font-semibold w-fit px-3 py-1 rounded-xl text-sm ${
+                            appt.mode.toLowerCase() === "online"
+                              ? "bg-green-200  text-green-700"
+                              : "bg-blue-100  text-blue-700"
+                          }`}
+                        >
+                          {appt.mode}
                         </div>
-                      )}
-                    </td>
-                  </tr>
-                ))
+                      </td>
+
+                      {/* Doctor */}
+                      <td className="py-4 px-4 flex items-center space-x-3">
+                        <Avatar
+                          name={appt?.doctor?.name}
+                          src={`http://localhost:1000/uploads/${appt?.doctor?.profileImg}`}
+                          className="rounded-xl shadow-sm"
+                          size="50"
+                        />
+                        <div>
+                          <p className="font-medium">
+                            {appt?.doctor?.name || "Unknown"}
+                          </p>
+                          <p className="text-sm text-gray-500">
+                            {appt?.doctor?.specialization || "N/A"}
+                          </p>
+                        </div>
+                      </td>
+                      <td className="relative">
+                        <button
+                          className="p-2"
+                          onClick={() =>
+                            setOpenDropdown(
+                              openDropdown === index ? null : index
+                            )
+                          }
+                        >
+                          <FiMoreVertical />
+                        </button>
+
+                        {/* Dropdown Menu */}
+                        {openDropdown === index && (
+                          <div className="absolute right-0 mt-2 z-50 w-48 bg-white shadow-lg rounded-lg p-2">
+                            {[
+                              "Reschedule booking",
+                              "Request reschedule",
+                              "Edit location",
+                              "Invite people",
+                              "Cancel event",
+                            ].map((action) => (
+                              <button
+                                key={action}
+                                className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100"
+                              >
+                                {action}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </td>
+                    </tr>
+                  ))
               ) : (
                 <tr>
                   <td colSpan="5" className="py-6 text-center text-gray-500">

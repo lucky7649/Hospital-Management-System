@@ -1,100 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import Dashbord from "../components/AdminDashbordLinks/Dashboard";
-// import Patient from "../components/AdminDashbordLinks/Patient";
-// import Staff from "../components/AdminDashbordLinks/Staff";
-// import AddStaff from "../components/AdminDashbordLinks/AddStaff";
-// import AddRoom from "../components/AdminDashbordLinks/AddRoom";
-// import BedChecking from "../components/BedCheking/BedChecking";
-// import { HiUsers } from "react-icons/hi2";
-// import { FaUser } from "react-icons/fa6";
-// import { TbLayoutDashboardFilled } from "react-icons/tb";
-// import { MdBedroomParent } from "react-icons/md";
-// import { IoBedSharp } from "react-icons/io5";
-
-// const PatientDashboard = () => {
-//   const savedActiveSection = localStorage.getItem("activeSection");
-//   const [activeSection, setActiveSection] = useState(
-//     savedActiveSection || "dashboard"
-//   );
-
-//   const renderContent = () => {
-//     switch (activeSection) {
-//       case "dashboard":
-//         return <Dashbord />;
-//       case "patients":
-//         return <Patient />;
-//       case "staff":
-//         return <Staff />;
-//       case "add-staff":
-//         return <AddStaff />;
-//       case "add-rooms":
-//         return <AddRoom />;
-//       case "check-bed-availability":
-//         return <BedChecking />;
-//       default:
-//         return <Dashbord />;
-//     }
-//   };
-//   useEffect(() => {
-//     localStorage.setItem("activeSection", activeSection);
-//   }, [activeSection]);
-
-//   return (
-//     <div className="flex w-full h-[85vh] fixed bg-gray-100">
-     
-//       <aside className="w-64 bg-white p-4 shadow-md transition-all duration-300">
-//         <div className="text-blue-500 font-semibold text-2xl text-center mb-6">
-//           Patient Dashboard
-//         </div>
-//         <nav>
-//           <ul className="space-y-4">
-//             {[
-//               {
-//                 label: "Dashboard",
-//                 icon: <TbLayoutDashboardFilled />,
-//                 key: "dashboard",
-//               },
-//               { label: "Patients", icon: <FaUser />, key: "patients" },
-//               { label: "Staff List", icon: <HiUsers />, key: "staff" },
-//               { label: "Add Staff", key: "add-staff" },
-//               {
-//                 label: "Add Rooms",
-//                 icon: <MdBedroomParent />,
-//                 key: "add-rooms",
-//               },
-//               {
-//                 label: "Check Beds Availability",
-//                 icon: <IoBedSharp />,
-//                 key: "check-bed-availability",
-//               },
-//             ].map(({ label, icon, key }) => (
-//               <li
-//                 key={key}
-//                 onClick={() => setActiveSection(key)}
-//                 className={`flex items-center gap-2 text-gray-700 bg-blue-50 hover:bg-blue-100 hover:text-blue-600 p-2 rounded cursor-pointer ${
-//                   activeSection === key ? "bg-blue-500 text-white" : ""
-//                 }`}
-//               >
-//                 {icon && <span>{icon}</span>}
-//                 {label}
-//               </li>
-//             ))}
-//           </ul>
-//         </nav>
-//       </aside>
-
-//       {/* Main Content */}
-//       <main className="flex-1  overflow-y-auto bg-gray-50 shadow-inner">
-//         <div className="transition-opacity duration-300 ease-in-out">
-//           {renderContent()}
-//         </div>
-//       </main>
-//     </div>
-//   );
-// };
-
-// export default PatientDashboard;
-
 import React, { useState, useEffect, lazy, Suspense } from "react";
 import { HiUsers } from "react-icons/hi2";
 import { FaUser } from "react-icons/fa6";
@@ -108,6 +11,7 @@ import { IoMdArrowDropleft } from "react-icons/io";
 import Avatar from "react-avatar";
 import axios from "axios";
 import AppointmentsPage from "../components/patientsComponents/appointmentsPage";
+import BookAppointment from "../components/patientsComponents/BookAppointment";
 
 // Lazy loading components
 const Dashboard = lazy(() =>
@@ -125,6 +29,7 @@ const BedChecking = lazy(() =>
 
 const PatientDashboard = () => {
 
+  
 
   const savedActiveSection = localStorage.getItem("activeSection");
   const [activeSection, setActiveSection] = useState(
@@ -165,8 +70,8 @@ const PatientDashboard = () => {
         return <Dashboard user={user} />;
       case "appointments":
         return <AppointmentsPage user={user} />;
-      case "staff":
-        return <Staff />;
+      case "book-appointments":
+        return <BookAppointment user={user} />;
       case "add-staff":
         return <AddStaff />;
       case "add-rooms":
@@ -180,8 +85,8 @@ const PatientDashboard = () => {
 
   const navigationItems = [
     { label: "Dashboard", icon: <TbLayoutDashboardFilled />, key: "dashboard" },
-    { label: "Appointments", icon: <FaUser />, key: "appointments" },
-    { label: "Staff List", icon: <HiUsers />, key: "staff" },
+    { label: "My Appointments", icon: <FaUser />, key: "appointments" },
+    { label: "Book Appointments", icon: <HiUsers />, key: "book-appointments" },
     { label: "Add Staff", key: "add-staff", icon: <BsPersonFillAdd /> },
     { label: "Add Rooms", icon: <BsFillHouseAddFill />, key: "add-rooms" },
     {

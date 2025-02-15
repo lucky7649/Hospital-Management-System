@@ -66,7 +66,7 @@ const QueueSchema = new mongoose.Schema({
     enum: ["online", "in-person"],
     required: true,
   },
-
+  roomId: String,
   appointmentDate: {
     type: Date,
     required: true, // Optional: You can set this based on when the appointment is booked
@@ -74,8 +74,8 @@ const QueueSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["waiting", "completed", "cancelled"],
-    default: "waiting",
+    enum: ["pending", "Complete ", "Cancelled"],
+    default: "pending",
   },
   priority: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },

@@ -14,6 +14,9 @@ const AdminSchema = new mongoose.Schema({
     unique: true,
     
   },
+  profileImg: {
+    type: String,
+  },
   username: {
     type: String,
     required: [true, "Admin username is required"],

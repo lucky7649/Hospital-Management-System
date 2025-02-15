@@ -8,6 +8,7 @@ import {
   RiBuilding2Line,
   RiUserHeartLine,
 } from "react-icons/ri"; // Remix Icons
+import { DotLoader } from "react-spinners";
 
 const BedChecking = ({ onRefresh }) => {
   const handleRefresh = () => {
@@ -41,7 +42,7 @@ const BedChecking = ({ onRefresh }) => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid"></div>
+        <DotLoader color="#2399e0" />
       </div>
     );
   }

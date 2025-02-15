@@ -97,6 +97,9 @@ const PatientSchema = new mongoose.Schema({
       message: "Date of birth must be a past date",
     },
   },
+  profileImg: {
+    type: String,
+  },
   status: {
     type: String,
     enum: ["active", "inactive"], // Restrict to allowed values

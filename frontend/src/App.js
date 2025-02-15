@@ -2,7 +2,7 @@ import './App.css';
 import Footer from "./components/CommanComponents/Footer";
 import Navbar from "./components/CommanComponents/Navbar";
 import AllDoctors from './pages/AllDoctors';
-import BookAppointment from './pages/BookAppointment';
+// import BookAppointment from './pages/BookAppointment';
 import Home from './pages/Home';
 import { Routes, Route } from 'react-router-dom';
 import LogIn from './pages/LogIn';
@@ -24,6 +24,8 @@ import GoogleTranslate from "./components/GoogleTranslate/GoogleTranslate";
 import ForgetPassword from "./components/CommanComponents/forgetPassword";
 import ResetPassword from "./components/CommanComponents/resetPassword";
 import LanguageSelector from './components/GoogleTranslate/languageSelector';
+import RoomPage from './pages/VideoRoom';
+import LobbyScreen from './pages/VideoCallLobby';
 
 
 
@@ -46,13 +48,12 @@ function App() {
       <Toaster />
       <GoogleTranslate />
 
-      
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/all-doctors" element={<AllDoctors />} />
 
-        <Route path="/book-appointment" element={<BookAppointment />} />
+        {/* <Route path="/book-appointment" element={<BookAppointment />} /> */}
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/Profile" element={<Profile />} />
         <Route path="/check-bed-availability" element={<BedOccupancy />} />
@@ -63,6 +64,8 @@ function App() {
         <Route path="/view-doctor-details/:id" element={<DoctorProfile />} />
 
         <Route path="/patient-dashboard" element={<PatientDashboard />} />
+        <Route path="/video-call/:roomId" element={<RoomPage />} />
+        <Route path="/video-call-lobby/:roomId" element={<LobbyScreen/>} />
 
         <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />

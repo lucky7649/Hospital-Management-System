@@ -1,37 +1,4 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import DoctorCard from "../DoctorCard/DoctorCard";
-// import BackButton from "../BackBtn/BackButton";
 
-// const AllDoctor = () => {
-//   const [Data, setData] = useState();
-//   useEffect(() => {
-//     const fetch = async () => {
-//       const response = await axios.get(
-//         "http://localhost:1000/api/v1/get-doctor-data"
-//       );
-//       setData(response.data.doctors);
-//     };
-//     fetch();
-//   }, []);
-
-//   return (
-//     <div className="container mx-auto px-4 pt-10 bg-gray-50">
-//       <h1 className="text-2xl md:text-3xl font-semibold text-blue-600 text-center ">
-//         Best Doctors in India
-//       </h1>
-//       <p className="text-lg text-gray-500 font-medium text-center my-4">
-//         Results: {Data?.length || 0}
-//       </p>
-
-//       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//         {Data && Data.map((doctor, i) => <DoctorCard key={i} data={doctor} />)}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AllDoctor;
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DoctorCard from "../patientsComponents/DoctorCard";
@@ -113,13 +80,14 @@ const AllDoctor = () => {
 
 
   return (
-    <div className="container mx-auto px-4 pt-10 bg-gray-50">
+    <div className="container flex gap-2 mx-auto px-4 pt-10 bg-gray-50">
+      <div className="w-2/6 h-screen p-4 flex flex-col gap-4">
       <h1 className="text-2xl md:text-3xl font-semibold text-blue-600 text-center">
         Best Doctors in India
       </h1>
       <p className="text-lg text-gray-500 font-medium text-center flex flex-col items-center  mt-6 mb-10">
         Results: {filteredData?.length || 0}
-        <div className="flex space-x-4 mt-3">
+        <div className="flex flex-col space-y-4 mt-3">
           <select
             name="specialty"
             value={filters.specialty}
@@ -191,9 +159,10 @@ const AllDoctor = () => {
             <option value="5">5 only</option>
           </select>
         </div>{" "}
-      </p>
+        </p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-6">
         {filteredData &&
           filteredData.map((doctor, i) => <DoctorCard key={i} data={doctor} />)}
       </div>

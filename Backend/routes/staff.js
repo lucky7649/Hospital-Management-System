@@ -92,6 +92,7 @@ router.post("/add-staff", authenticateToken, async (req, res) => {
       state,
       postalCode,
       country,
+      profileImg,
       department,
       specialization,
     } = req.body;
@@ -110,6 +111,7 @@ router.post("/add-staff", authenticateToken, async (req, res) => {
       postalCode,
       country,
       username,
+      profileImg,
       password: hashedPassword,
       department: department || null,
       specialization: specialization || null,
@@ -118,21 +120,21 @@ router.post("/add-staff", authenticateToken, async (req, res) => {
    
  await staff.save();
     // Send SMS notification
-     const smsResult = await sendSmsNotification(
-       phone,
-       role,
-       username,
-       plainPassword
-     );
-    if (!smsResult || !smsResult.success) {
-      return res
-        .status(400)
-        .json({
-          message: smsResult
-            ? smsResult.message
-            : "An unknown error occurred while sending the SMS.",
-        });
-    }
+    //  const smsResult = await sendSmsNotification(
+    //    phone,
+    //    role,
+    //    username,
+    //    plainPassword
+    //  );
+    // if (!smsResult || !smsResult.success) {
+    //   return res
+    //     .status(400)
+    //     .json({
+    //       message: smsResult
+    //         ? smsResult.message
+    //         : "An unknown error occurred while sending the SMS.",
+    //     });
+    // }
 
     res.status(201).json({
       message: `${

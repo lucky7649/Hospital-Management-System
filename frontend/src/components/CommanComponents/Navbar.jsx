@@ -23,11 +23,7 @@ const Navbar = () => {
     
 
     
-      {
-        title: "Check Bed Availability",
-        url: "/check-bed-availability",
-        icon: <FaBed />,
-      },
+    
       {
         title: "Dashboard",
         url: "/patient-dashboard",

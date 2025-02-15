@@ -8,6 +8,7 @@ import axios from "axios";
 import Avatar from "react-avatar";
 import toast from "react-hot-toast";
 import PrescriptionForm from "../DoctorDashboardLinks/PrescriptionForm";
+import { useNavigate } from "react-router-dom";
 
 const DoctorAppointment = () => {
   const [appointments, setAppointments] = useState([]);
@@ -18,8 +19,10 @@ const DoctorAppointment = () => {
   const [notifiedPatients, setNotifiedPatients] = useState(new Set());
   const [activeTab, setActiveTab] = useState("in-person");
 
+
   const patientId = selectedPatient?._id;
   const doctorId = localStorage.getItem("userId");
+  const navigate = useNavigate();
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -150,6 +153,8 @@ const DoctorAppointment = () => {
     );
   }
 
+
+   
   const formattedDateOfBirth = selectedPatient?.dateOfBirth
     ? new Date(selectedPatient.dateOfBirth).toISOString().split("T")[0]
     : "N/A";
@@ -167,6 +172,11 @@ const offlineAppointments = appointments.filter(
   (appointment) => appointment?.mode === "in-person"
   ).length; 
   
+const handleStartCall = (roomId) => {
+  navigate(`/video-call/${roomId}`);
+};
+
+
   const analyticsCards = [
     {
       title: "Total Appointments",
@@ -267,31 +277,30 @@ const offlineAppointments = appointments.filter(
           ))}
         </div>
 
-       
         <div className="flex space-x-2 items-center justify-between  mt-4 mb-4">
           <h2 className="text-xl text-blue-500 font-semibold ">
             Patient Queue
           </h2>
           <div className="flex gap-2">
-          <button
-            className={`px-2 py-2 rounded text-sm font-semibold ${
-              activeTab === "in-person"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-600"
-            }`}
-            onClick={() => setActiveTab("in-person")}
-          >
-            In-Person
-          </button>
-          <button
-            className={`px-2 py-2 rounded text-sm font-semibold ${
-              activeTab === "online"
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 text-gray-600"
-            }`}
-            onClick={() => setActiveTab("online")}
-          >
-            Online
+            <button
+              className={`px-2 py-2 rounded text-sm font-semibold ${
+                activeTab === "in-person"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-600"
+              }`}
+              onClick={() => setActiveTab("in-person")}
+            >
+              In-Person
+            </button>
+            <button
+              className={`px-2 py-2 rounded text-sm font-semibold ${
+                activeTab === "online"
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-600"
+              }`}
+              onClick={() => setActiveTab("online")}
+            >
+              Online
             </button>
           </div>
         </div>
@@ -299,7 +308,7 @@ const offlineAppointments = appointments.filter(
           {appointments
             .filter(
               (appointment) =>
-                appointment?.status === "waiting" &&
+                appointment?.status === "pending" &&
                 appointment?.mode === activeTab
             ) // Filter appointments with 'waiting' status
             .map((appointment, idx) => (
@@ -356,6 +365,20 @@ const offlineAppointments = appointments.filter(
                     >
                       {appointment?.mode || "in-person"}
                     </span>
+                    {appointment?.mode === "online" ? (
+                      <button
+                        onClick={() =>
+                          navigate(
+                            `/video-call-lobby/${appointment?.roomId}`
+                          )
+                        }
+                        className="px-3 py-1 rounded-lg text-sm font-semibold bg-green-100 text-green-600"
+                      >
+                        Start Call as Patient
+                      </button>
+                    ) : (
+                      <p>f</p>
+                    )}
                   </div>
 
                   <button
