@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState, useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaPhoneAlt } from "react-icons/fa";
 import Avatar from "react-avatar";
@@ -7,18 +7,32 @@ import Avatar from "react-avatar";
 
 const DoctorCard = ({ data }) => {
   const navigate = useNavigate();
+
+  const [avatarSize, setAvatarSize] = useState(
+    window.innerWidth < 768 ? 100 : 200
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setAvatarSize(window.innerWidth < 768 ? 100 : 200);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   return (
-    <div className="group block bg-white shadow-md rounded-2xl h-fit p-6 hover:shadow-xl transition-transform duration-300 transform hover:-translate-y-2">
+    <div className="group block bg-white shadow-md rounded-2xl h-fit p-3 md:p-6 hover:shadow-xl transition-transform duration-300 transform hover:-translate-y-2">
       <Link
         to={`/view-doctor-details/${data._id}`}
-        className="flex items-start gap-6"
+        className="flex  items-start gap-6"
       >
         <Avatar
           name={data?.name}
           src={`http://localhost:1000/uploads/${data?.profileImg}`}
           className="rounded-2xl shadow-md object-cover"
-          size="200"
+          size={avatarSize}
         />
+
         <div className="flex-1">
           <h3 className="text-2xl font-semibold text-gray-700 group-hover:text-blue-600 transition-colors duration-200">
             Dr. {data?.name?.replace(/^Dr\.?\s*/i, "")}
@@ -36,7 +50,7 @@ const DoctorCard = ({ data }) => {
             <span className="text-gray-600 font-semibold">Languages:</span>{" "}
             {data.languages?.join(", ") || "Not specified"}
           </p>
-          <div className="mt-4 text-sm text-gray-600 space-y-1">
+          <div className="mt-4 text-sm hidden md:block text-gray-600 space-y-1">
             <p>
               🏅{" "}
               {data.experience
@@ -60,9 +74,9 @@ const DoctorCard = ({ data }) => {
       <div className="flex mt-5 gap-4">
         <button
           onClick={() => navigate("/book-appointment", { state: { data } })}
-          className="flex-1 bg-blue-500 text-white text-sm md:text-base px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-all duration-200"
+          className="flex-1 bg-blue-500 text-white text-sm md:text-base md:px-4 px-2 py-1 md:py-2  rounded-lg font-medium hover:bg-blue-600 transition-all duration-200"
         >
-          Book an Appointment
+          Book Appointment
         </button>
         <button className="flex-1 flex gap-2 items-center text-sm md:text-base justify-center bg-green-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-400 transition-all duration-200">
           <FaPhoneAlt className="text-lg" /> Call

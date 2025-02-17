@@ -30,7 +30,7 @@ const Hero = () => {
       </div>
 
       {/* Right Section - Image */}
-      <div className="w-full relative lg:w-3/6 h-fit lg:h-[100%] flex items-center justify-center">
+      <div className="w-full px-0 relative lg:w-3/6 h-fit lg:h-[100%] flex items-center justify-center">
         <img
           src="./heroDoctor.png"
           alt="hero-img"

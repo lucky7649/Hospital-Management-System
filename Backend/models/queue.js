@@ -74,8 +74,8 @@ const QueueSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["pending", "Complete ", "Cancelled"],
-    default: "pending",
+    enum: ["Pending", "Completed", "Cancelled"],
+    default: "Pending",
   },
   priority: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },

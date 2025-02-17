@@ -308,7 +308,7 @@ const handleStartCall = (roomId) => {
           {appointments
             .filter(
               (appointment) =>
-                appointment?.status === "pending" &&
+                appointment?.status === "Pending" &&
                 appointment?.mode === activeTab
             ) // Filter appointments with 'waiting' status
             .map((appointment, idx) => (
@@ -374,10 +374,10 @@ const handleStartCall = (roomId) => {
                         }
                         className="px-3 py-1 rounded-lg text-sm font-semibold bg-green-100 text-green-600"
                       >
-                        Start Call as Patient
+                        Start Call 
                       </button>
                     ) : (
-                      <p>f</p>
+                      <p></p>
                     )}
                   </div>
 

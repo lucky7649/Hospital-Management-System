@@ -9,7 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import UserProfile from "./UserAvatar";
 import { authActions } from "../../store/auth";
 import { FiBell } from "react-icons/fi";
-import LanguageSelector from "../GoogleTranslate/languageSelector";
+import { NavLink } from "react-router-dom";
+import { useActiveSection } from "../../context/ActiveSectionContext";
 
 const Navbar = () => {
   const Links = {
@@ -57,6 +58,8 @@ const Navbar = () => {
     ],
   };
 
+    const { setActiveSection } = useActiveSection();
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -80,7 +83,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className=" z-30 px-4 lg:px-32 py-4 flex items-center justify-between">
+      <nav className="sticky top-0 bg-white shadow-md z-30 px-2 py-2 md:px-4 lg:px-32 md:py-4 flex items-center justify-between">
         <Link to="/" className="flex gap-2 items-center">
           <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
             <span className="text-red-400 text-3xl font-bold">
@@ -90,26 +93,42 @@ const Navbar = () => {
           <h1 className="text-2xl font-bold">MediCare</h1>
         </Link>
         <div className="nav-links-hospital block md:flex gap-6 items-center">
-          <div className="hidden md:flex gap-6">
+          <div className="hidden md:flex gap-2">
             {roleLinks.map((item, index) => (
-              <Link
+              <NavLink
                 to={item.url}
                 key={index}
-                className="text-gray-600  hover:text-blue-500 transition-all duration-300"
+                className={({ isActive }) =>
+                  `relative px-3 py-1 text-base font-medium transition-all duration-300 rounded-md 
+              ${
+                isActive
+                  ? "text-blue-600 bg-blue-200 border-b-2 border-blue-500 "
+                  : "text-gray-600 hover:text-blue-500 hover:bg-gray-100"
+              }`
+                }
               >
                 {item.title}
-              </Link>
+                {/* Optional underline effect for active links */}
+                {({ isActive }) =>
+                  isActive && (
+                    <span className="absolute left-0 bottom-0 w-full h-1 bg-blue-500 rounded-full transition-all duration-300"></span>
+                  )
+                }
+              </NavLink>
             ))}
           </div>
-         
+
           <div className="hidden md:flex gap-6">
             {userRole === "patient" && (
-              <Link
-                to="/book-appointment"
+              <button
+                onClick={() => {
+                  setActiveSection("book-appointments"); // Set active section
+                  navigate("/patient-dashboard"); // Navigate to the route
+                }}
                 className="px-3 py-2 border-blue-500 bg-gray-200 rounded hover:bg-blue-500 hover:text-white transition-all duration-300"
               >
                 Book appointment
-              </Link>
+              </button>
             )}
             {(userRole === "doctor" || userRole === "admin") && (
               <Link
@@ -144,7 +163,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Navigation */}
-      <div
+      {/* <div
         className={`${
           isMobileNavVisible ? "translate-y-20" : "-translate-y-full"
         } bg-gradient-to-b z-10 from-blue-100 via-white to-blue-50 h-fit px-10 py-20 top-0 left-0 w-full fixed flex md:hidden flex-col items-start justify-start transition-transform duration-500  shadow-lg`}
@@ -191,6 +210,59 @@ const Navbar = () => {
             <AiOutlineLogout className="ml-2" />
           </Link>
         )}
+      </div> */}
+      <div
+        className={`${
+          isMobileNavVisible
+            ? "translate-y-16 opacity-100"
+            : "-translate-y-full opacity-0"
+        } fixed top-0 left-0 w-full h-fit bg-white shadow-lg z-50 flex flex-col items-center py-10 transition-all duration-500 md:hidden`}
+      >
+        {/* Navigation Links */}
+        <div className="w-4/5 flex flex-col gap-4">
+          {roleLinks.map((item, index) => (
+            <Link
+              to={item.url}
+              key={index}
+              className="flex items-center gap-4 text-gray-700 text-lg p-3 rounded-lg bg-blue-50 hover:bg-blue-500 hover:text-white shadow transition-all duration-300"
+              onClick={() => setMobileNavVisible(false)}
+            >
+              {item.icon}
+              {item.title}
+            </Link>
+          ))}
+
+          {/* Book Appointment Button */}
+          <Link
+            to="/book-appointment"
+            onClick={() => setMobileNavVisible(false)}
+            className="text-center px-6 py-3 text-lg font-semibold text-blue-600 border-2 border-blue-600 rounded-lg hover:bg-blue-600 hover:text-white shadow transition-all duration-300"
+          >
+            Book Appointment
+          </Link>
+
+          {/* Authentication Buttons */}
+          {!isLoggedIn ? (
+            <Link
+              to="/login"
+              onClick={() => setMobileNavVisible(false)}
+              className="flex items-center justify-center px-6 py-3 text-lg font-semibold bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow transition-all duration-300"
+            >
+              Login <AiOutlineLogin className="ml-2" />
+            </Link>
+          ) : (
+            <Link
+              to="/"
+              onClick={() => {
+                handleLogout();
+                setMobileNavVisible(false);
+              }}
+              className="flex items-center justify-center px-6 py-3 text-lg font-semibold bg-blue-500 text-white rounded-lg hover:bg-red-600 shadow transition-all duration-300"
+            >
+              Logout <AiOutlineLogout className="ml-2" />
+            </Link>
+          )}
+        </div>
       </div>
     </>
   );

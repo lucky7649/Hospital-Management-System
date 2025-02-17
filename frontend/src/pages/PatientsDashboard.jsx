@@ -1,17 +1,16 @@
 import React, { useState, useEffect, lazy, Suspense } from "react";
-import { HiUsers } from "react-icons/hi2";
-import { FaUser } from "react-icons/fa6";
 import { TbLayoutDashboardFilled } from "react-icons/tb";
-import { MdBedroomParent } from "react-icons/md";
-import { IoBedSharp } from "react-icons/io5";
-import { BsPersonFillAdd } from "react-icons/bs";
-import { BsFillHouseAddFill } from "react-icons/bs";
+import { FaRegAddressBook } from "react-icons/fa6";
+import { LuBedSingle } from "react-icons/lu";
+
 import { IoMdArrowDropright } from "react-icons/io";
 import { IoMdArrowDropleft } from "react-icons/io";
 import Avatar from "react-avatar";
 import axios from "axios";
 import AppointmentsPage from "../components/patientsComponents/appointmentsPage";
 import BookAppointment from "../components/patientsComponents/BookAppointment";
+import { FaRegCalendarCheck } from "react-icons/fa";
+import { useActiveSection } from "../context/ActiveSectionContext";
 
 // Lazy loading components
 const Dashboard = lazy(() =>
@@ -28,54 +27,51 @@ const BedChecking = lazy(() =>
 );
 
 const PatientDashboard = () => {
+  const { activeSection, setActiveSection } = useActiveSection(); // Use global state
 
-  
-
-  const savedActiveSection = localStorage.getItem("activeSection");
-  const [activeSection, setActiveSection] = useState(
-    savedActiveSection || "dashboard"
+  // const savedActiveSection = localStorage.getItem("activeSection");
+  // const [activeSection, setActiveSection] = useState(
+  //   savedActiveSection || "dashboard"
+  // );
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+    window.innerWidth < 768
   );
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     localStorage.setItem("activeSection", activeSection);
   }, [activeSection]);
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
-    const headers = {
-      id: localStorage.getItem("id"),
-      authorization: `Bearer ${localStorage.getItem("token")}`,
+  const headers = {
+    id: localStorage.getItem("id"),
+    authorization: `Bearer ${localStorage.getItem("token")}`,
+  };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:1000/api/v1/get-user-information`,
+          { headers }
+        );
+        setUser(response.data.data);
+      } catch (err) {
+      } finally {
+      }
     };
- 
 
-    useEffect(() => {
-      const fetchUser = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:1000/api/v1/get-user-information`,
-            { headers }
-          );
-          setUser(response.data.data);
-        } catch (err) {
-        } finally {
-        }
-      };
-
-      fetchUser();
-    }, []);
+    fetchUser();
+  }, []);
 
   const renderContent = () => {
     switch (activeSection) {
       case "dashboard":
-        return <Dashboard user={user} />;
+        return <Dashboard user={user} setActiveSection={setActiveSection} />;
       case "appointments":
         return <AppointmentsPage user={user} />;
       case "book-appointments":
         return <BookAppointment user={user} />;
-      case "add-staff":
-        return <AddStaff />;
-      case "add-rooms":
-        return <AddRoom />;
+
       case "check-bed-availability":
         return <BedChecking />;
       default:
@@ -85,13 +81,19 @@ const PatientDashboard = () => {
 
   const navigationItems = [
     { label: "Dashboard", icon: <TbLayoutDashboardFilled />, key: "dashboard" },
-    { label: "My Appointments", icon: <FaUser />, key: "appointments" },
-    { label: "Book Appointments", icon: <HiUsers />, key: "book-appointments" },
-    { label: "Add Staff", key: "add-staff", icon: <BsPersonFillAdd /> },
-    { label: "Add Rooms", icon: <BsFillHouseAddFill />, key: "add-rooms" },
+    {
+      label: "My Appointments",
+      icon: <FaRegAddressBook />,
+      key: "appointments",
+    },
+    {
+      label: "Book Appointments",
+      icon: <FaRegCalendarCheck />,
+      key: "book-appointments",
+    },
     {
       label: "Check Beds Availability",
-      icon: <IoBedSharp />,
+      icon: <LuBedSingle />,
       key: "check-bed-availability",
     },
   ];
@@ -108,11 +110,15 @@ const PatientDashboard = () => {
           <div
             className={`text-blue-500 font-semibold text-xl  flex text-center transition-opacity duration-300 ease-in-out `}
           >
-            <div className="flex items-center space-x-3 cursor-pointer">
+            <div
+              className={`flex items-center space-x-3 transition-all duration-300 ${
+                isSidebarCollapsed ? "p-0" : " p-2 bg-blue-50 rounded-md"
+              }  cursor-pointer`}
+            >
               <div className="w-10 h-10 rounded overflow-hidden">
                 <Avatar
                   name={user?.name}
-                  src={user?.avatarURL}
+                  src={`http://localhost:1000/uploads/${user?.profileImg}`}
                   size="40"
                   className="w-full h-full object-cover"
                 />
@@ -167,8 +173,10 @@ const PatientDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-gray-50 shadow-inner">
-        <Suspense fallback={<div className="text-center p-4">Loading...</div>}>
+      <main className="flex-1 ml-14 md:ml-0 overflow-y-auto bg-gray-50 shadow-inner">
+        <Suspense
+          fallback={<div className="text-center md:p-4">Loading...</div>}
+        >
           {renderContent()}
         </Suspense>
       </main>

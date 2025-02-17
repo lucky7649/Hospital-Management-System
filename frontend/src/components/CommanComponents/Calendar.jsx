@@ -88,7 +88,7 @@ const Calendar = () => {
   };
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md w-80 h-96">
+    <div className="p-6 bg-white hidden md:block  rounded-lg shadow-md w-80 h-96">
       <div className="flex justify-between items-center border-b-2 border-gray-200 pb-3 mb-6">
         <button
           className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full text-gray-600"
@@ -109,7 +109,10 @@ const Calendar = () => {
       </div>
       <div className="grid grid-cols-7 gap-1 text-center text-xsm text-gray-600">
         {daysOfWeek.map((day) => (
-          <div key={day} className="font-semibold bg-gray-100 rounded text-gray-400">
+          <div
+            key={day}
+            className="font-semibold bg-gray-100 rounded text-gray-400"
+          >
             {day}
           </div>
         ))}

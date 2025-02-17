@@ -26,6 +26,7 @@ import ResetPassword from "./components/CommanComponents/resetPassword";
 import LanguageSelector from './components/GoogleTranslate/languageSelector';
 import RoomPage from './pages/VideoRoom';
 import LobbyScreen from './pages/VideoCallLobby';
+import { ActiveSectionProvider } from './context/ActiveSectionContext';
 
 
 
@@ -47,7 +48,7 @@ function App() {
     <div className="">
       <Toaster />
       <GoogleTranslate />
-
+<ActiveSectionProvider>
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
@@ -74,7 +75,8 @@ function App() {
 
         <Route path="/LogIn" element={<LogIn />} />
       </Routes>
-      <Footer />
+        <Footer />
+      </ActiveSectionProvider>
     </div>
   );
 }

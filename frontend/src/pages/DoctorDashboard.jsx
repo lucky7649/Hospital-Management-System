@@ -6,6 +6,9 @@ import DoctorAppointment from "../components/DoctorDashboardLinks/DoctorAppointm
 import { FaUser } from "react-icons/fa6";
 import DoctorOverview from "../components/DoctorDashboardLinks/DocOverview";
 import axios from "axios";
+import { IoMdArrowDropright } from "react-icons/io";
+import { IoMdArrowDropleft } from "react-icons/io";
+import Avatar from "react-avatar";
 
 const DoctorDashboard = () => {
   const savedActiveSection = localStorage.getItem("activeSection");
@@ -15,6 +18,9 @@ const DoctorDashboard = () => {
   const [doctor, setDoctor] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+      window.innerWidth < 768
+    );
 
   const id = localStorage.getItem("userId");
 
@@ -57,42 +63,84 @@ const DoctorDashboard = () => {
     localStorage.setItem("activeSection", activeSection);
   }, [activeSection]);
 
+    const navigationItems = [
+      {
+        label: "Dashboard",
+        icon: <TbLayoutDashboardFilled />,
+        key: "doctorOverview",
+      },
+      { label: "Appointments", icon: <FaUser />, key: "appointments" },
+       {
+        label: "Check Beds Availability",
+        icon: <IoBedSharp />,
+        key: "check-bed-availability",
+      },
+    ];
+
   return (
     <div className="flex flex-col lg:flex-row  w-full h-[90vh] fixed border-t-2 border-gray-300">
       {/* Collapsible Sidebar */}
-      <aside className="w-64  bg-white p-4 border-r-2 border-gray-300 shadow-md transition-all duration-300">
-        <div className="text-blue-500 font-semibold text-2xl text-center mb-6">
-          Doctor Dashboard
-        </div>
-        <nav>
-          <ul className="space-y-4">
-            {[
-              {
-                label: "Overview",
-                icon: <TbLayoutDashboardFilled />,
-                key: "doctorOverview",
-              },
-
-              {
-                label: "Check Beds Availability",
-                icon: <IoBedSharp />,
-                key: "check-bed-availability",
-              },
-              {
-                label: "Appointments",
-                icon: <FaUser />,
-                key: "appointments",
-              },
-            ].map(({ label, icon, key }) => (
-              <li
-                key={key}
-                onClick={() => setActiveSection(key)}
-                className={`flex items-center gap-2 text-gray-700 bg-blue-50 hover:bg-blue-100 hover:text-blue-600 p-2 rounded cursor-pointer ${
-                  activeSection === key ? "bg-blue-500 text-white" : ""
+      <aside
+        className={`${
+          isSidebarCollapsed ? "w-16" : "w-64"
+        } bg-white shadow-md h-full transition-all duration-300 fixed lg:relative z-10`}
+      >
+        <div className="flex items-center justify-between p-4">
+          <div
+            className={`text-blue-500 font-semibold text-xl  flex text-center transition-opacity duration-300 ease-in-out `}
+          >
+            <div className="flex items-center space-x-3 cursor-pointer">
+              <div className="w-10 h-10 rounded overflow-hidden">
+                <Avatar
+                  name={doctor?.name}
+                  src={`http://localhost:1000/uploads/${doctor?.profileImg}`}
+                  size="40"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div
+                className={`flex flex-col ${
+                  isSidebarCollapsed ? " hidden" : "block"
                 }`}
               >
-                {icon && <span>{icon}</span>}
-                {label}
+                <p className="text-sm capitalize font-semibold ">
+                  {doctor?.name}
+                </p>
+                <p className="text-xs capitalize text-gray-500 font-semibold">
+                  {doctor?.email}
+                </p>
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+            className="p-1 text-white text-xl bg-blue-500 rounded-full absolute top-16 right-[-12px]  focus:outline-none"
+          >
+            {isSidebarCollapsed ? (
+              <IoMdArrowDropright />
+            ) : (
+              <IoMdArrowDropleft />
+            )}
+          </button>
+        </div>
+        <nav>
+          <ul
+            className={`space-y-4 border-t-2 border-b-2 border-gray-100 ${
+              isSidebarCollapsed ? "p-3" : "p-4"
+            }`}
+          >
+            {navigationItems.map(({ label, icon, key }) => (
+              <li
+                key={key}
+                role="button"
+                aria-current={activeSection === key ? "page" : undefined}
+                onClick={() => setActiveSection(key)}
+                className={`flex items-center gap-2 text-gray-600 bg-blue-50 hover:bg-blue-100 hover:text-blue-600 rounded cursor-pointer ${
+                  activeSection === key ? "bg-blue-500 text-white" : ""
+                } ${isSidebarCollapsed ? "p-3" : "p-2"}`}
+              >
+                {icon && <span className="text-lg">{icon}</span>}
+                {!isSidebarCollapsed && label}
               </li>
             ))}
           </ul>
@@ -100,7 +148,7 @@ const DoctorDashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-gray-50 shadow-inner">
+      <main className="flex-1 ml-14 md:ml-0 overflow-y-auto bg-gray-50 shadow-inner">
         <div className="transition-opacity duration-300 ease-in-out">
           {renderContent()}
         </div>

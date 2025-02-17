@@ -120,7 +120,7 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="relative p-2 bg-gray-100 rounded-lg">
+    <div className="relative p-1 md:p-2 bg-gray-100 rounded-lg">
       {/* Avatar and hover card */}
       <div
         className="flex items-center space-x-3 cursor-pointer"
@@ -130,18 +130,18 @@ const UserProfile = () => {
         <div className="w-10 h-10 rounded overflow-hidden">
           <Avatar
             name={user?.name}
-            src={user?.avatarURL}
+            src={`http://localhost:1000/uploads/${user?.profileImg}`}
             size="40"
-            className="w-full h-full object-cover"
+            className=" object-cover"
           />
         </div>
-        <div className="flex flex-col ">
+        <div className="hidden md:flex flex-col ">
           <p className="text-sm capitalize font-semibold ">{user?.name}</p>
           <p className="text-xs capitalize text-gray-500 font-semibold">
             {user?.role}
           </p>
         </div>
-        <div className="text-gray-500">
+        <div className="text-gray-500 hidden md:block">
           <FaCaretDown />
         </div>
       </div>

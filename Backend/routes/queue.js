@@ -165,7 +165,7 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
       email,
       dateOfBirth,
       reasonForVisit,
-      status: "pending",
+      status: "Pending",
       mode,
       appointmentDate,
       priority: false,

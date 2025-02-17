@@ -75,7 +75,7 @@ const AutomationAnalytics = ({ data }) => {
     <div className="p-3 md:p-6 bg-white rounded-lg shadow-md">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-lg md:text-3xl font-semibold text-blue-500">
+        <h2 className="text-sm sm:text-lg md:text-3xl font-semibold text-blue-500">
           Rooms Automation Analytics
         </h2>
         <div className="flex text-xs md:text-base items-center space-x-2 bg-white p-2 rounded-md shadow">
@@ -88,16 +88,16 @@ const AutomationAnalytics = ({ data }) => {
         {analyticsCards.map((card, index) => (
           <div
             key={index}
-            className={`p-4 ${card.bgColor} border-l-4 ${card.borderColor} rounded-lg shadow-sm`}
+            className={`p-2 md:p-4 ${card.bgColor} border-l-4 ${card.borderColor} rounded-lg shadow-sm`}
           >
             <div className="flex justify-between items-center">
-              <h3 className="text-sm font-medium text-gray-700">
+              <h3 className="text-xs md:text-sm font-medium text-gray-700">
                 {card.title}
               </h3>
-              <span className={`text-2xl ${card.iconColor}`}>{card.icon}</span>
+              <span className={`text-lg md:text-2xl ${card.iconColor}`}>{card.icon}</span>
             </div>
             <div className="mt-2">
-              <p className="text-3xl font-bold">{card.value}</p>
+              <p className="text-xl  md:text-3xl font-bold">{card.value}</p>
               <p className="text-xs mt-1 md:text-md text-gray-500">{card.description}</p>
             </div>
           </div>

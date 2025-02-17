@@ -202,7 +202,7 @@ const AdminDashboard = () => {
               <div className="w-10 h-10 rounded overflow-hidden">
                 <Avatar
                   name={user?.name}
-                  src={user?.avatarURL}
+                  src={`http://localhost:1000/uploads/${user?.profileImg}`}
                   size="40"
                   className="w-full h-full object-cover"
                 />

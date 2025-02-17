@@ -309,118 +309,6 @@ const handleEndCall = useCallback(() => {
   ]);
 
   return (
-    // <div className="flex flex-col items-center  h-screen bg-gray-100 text-gray-900 p-4">
-    //   <div className="bg-white shadow-lg rounded-xl p-8 w-1/3 text-center m-4">
-    //     <h1 className="text-3xl font-bold mb-4 text-blue-600">Video Call</h1>
-    //     {callEnded ? (
-    //       <h4 className="text-lg mb-4 text-red-600">Call Ended</h4>
-    //     ) : (
-    //       <>
-    //         {remoteSocketId ? (
-    //           <h4 className="text-lg text-green-600 transition-all animate-fade-in">
-    //             ✅ Connected to participant
-    //           </h4>
-    //         ) : (
-    //           <div className="flex flex-col items-center">
-    //             <h4 className="text-lg text-gray-600 animate-pulse mb-4">
-    //               Waiting for participant...
-    //             </h4>
-    //             <BiLoaderCircle className="w-10 h-10 text-blue-500 animate-spin" />
-    //           </div>
-    //         )}
-    //       </>
-    //     )}
-    //   </div>
-
-    //   <div className="relative flex flex-col md:flex-row gap-4 w-full max-w-5xl bg-white p-4 rounded-lg shadow-lg">
-    //     <div className="relative w-full md:w-1/2 bg-black rounded-lg overflow-hidden h-[300px] md:h-[350px]">
-    //       {myStream && isVideoOn ? (
-    //         <ReactPlayer
-    //           playing
-    //           muted
-    //           className="rounded-lg"
-    //           height="100%"
-    //           width="100%"
-    //           url={myStream}
-    //         />
-    //       ) : (
-    //         <div className="w-full h-full flex items-center justify-center">
-    //           <div className="w-20 h-20 rounded-full bg-gray-500  flex items-center justify-center">
-    //             <FaRegUser size={30} />
-    //           </div>
-    //         </div>
-    //       )}
-    //       <span className="absolute bottom-2 left-2 bg-gray-800 text-white text-sm px-2 py-1 rounded-md">
-    //         You
-    //       </span>
-    //     </div>
-    //     <div className="relative w-full md:w-1/2 bg-black rounded-lg overflow-hidden h-[300px] md:h-[350px]">
-    //       {remoteStream && isRemoteVideoOn ? (
-    //         <ReactPlayer
-    //           playing
-    //           className="rounded-lg"
-    //           height="100%"
-    //           width="100%"
-    //           url={remoteStream}
-    //         />
-    //       ) : (
-    //         <div className="w-full h-full flex items-center justify-center">
-    //           <div className="w-20 h-20 rounded-full bg-gray-500 flex items-center justify-center">
-    //             <FaRegUser size={30} />
-    //           </div>
-    //         </div>
-    //       )}
-    //       <span className="absolute bottom-2 left-2 bg-gray-800 text-white text-sm px-2 py-1 rounded-md">
-    //         Remote
-    //       </span>
-    //     </div>
-    //   </div>
-
-    //   <div className="flex gap-4 mt-4">
-    //     {isReceiving && myStream && !isStreamSent && (
-    //       <button
-    //         className="px-6 py-2 flex items-center gap-2 bg-blue-100 hover:bg-blue-200 text-blue-500 font-semibold rounded-lg shadow"
-    //         onClick={sendStreams}
-    //       >
-    //         <MdIosShare /> Send Stream
-    //       </button>
-    //     )}
-    //     {remoteSocketId && !isReceiving && !isCallStarted && (
-    //       <button
-    //         className="px-6 py-2 flex items-center gap-2 bg-green-100 hover:bg-green-200 text-green-500 font-semibold rounded-lg shadow"
-    //         onClick={handleCallUser}
-    //       >
-    //         <MdOutlinePhoneInTalk />
-    //         Call
-    //       </button>
-    //     )}
-    //     {myStream && (
-    //       <>
-    //         <button
-    //           className="px-6 py-2 bg-white hover:bg-gray-200 text-gray-500 font-semibold rounded-lg shadow"
-    //           onClick={toggleVideo}
-    //         >
-    //           {isVideoOn ? <IoVideocamOutline /> : <IoVideocamOffOutline />}
-    //         </button>
-    //         <button
-    //           className="px-6 py-2 bg-white hover:bg-gray-200 text-gray-500 font-semibold rounded-lg shadow"
-    //           onClick={toggleAudio}
-    //         >
-    //           {isAudioOn ? <MdOutlineMicNone /> : <MdOutlineMicOff />}
-    //         </button>
-    //       </>
-    //     )}
-
-    //     {myStream && (
-    //       <button
-    //         className="px-6 py-2 flex gap-2 items-center bg-red-100 hover:bg-red-200 text-red-500 font-semibold rounded-lg shadow"
-    //         onClick={handleEndCall}
-    //       >
-    //         <FiLogOut /> Leave
-    //       </button>
-    //     )}
-    //   </div>
-    // </div>
     <div className="flex flex-col items-center h-full bg-gray-100 text-gray-900 p-4">
       {showPopup && (
         <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-30 h-screen backdrop-blur-sm z-10">
@@ -457,7 +345,7 @@ const handleEndCall = useCallback(() => {
       <VideoCallTimer isCallStarted={isCallActive} />
       <div className="relative flex flex-col w-full max-w-5xl bg-white p-4 rounded-3xl shadow-lg">
         {/* Remote Stream (Bigger and on top) */}
-        <div className="relative w-full h-[500px] bg-black rounded-3xl overflow-hidden">
+        <div className="relative w-full h-[300px] md:h-[500px] bg-black rounded-xl md:rounded-3xl overflow-hidden">
           {remoteStream && isRemoteVideoOn ? (
             <ReactPlayer
               playing
@@ -470,17 +358,65 @@ const handleEndCall = useCallback(() => {
             <div className="w-full h-full flex items-center justify-center">
               <div className="w-24 h-24 rounded-full bg-gray-500 flex items-center justify-center">
                 <FaRegUser size={40} />
-              </div>
+                </div>
+                
             </div>
           )}
           <span className="absolute bottom-2 left-2 bg-gray-800 text-white text-sm px-2 py-1 rounded-md">
             Remote
           </span>
         </div>
-
-        {/* My Stream (Smaller and on Bottom) */}
         <Draggable>
-          <div className="relative w-1/3 h-[200px] bg-black rounded-3xl overflow-hidden mt-4 self-start">
+        <div className="self-center m-2 flex gap-4 p-2  rounded-full bg-gray-200">
+        
+
+          {myStream && (
+            <>
+              {/* Video Toggle Button */}
+              <button
+                className={`p-3 text-xl font-semibold rounded-full shadow ${
+                  isVideoOn
+                    ? "bg-green-100 hover:bg-green-200 text-green-500" // Video ON
+                    : "bg-red-100 hover:bg-red-200 text-red-500" // Video OFF
+                }`}
+                onClick={toggleVideo}
+              >
+                {isVideoOn ? <IoVideocamOutline /> : <IoVideocamOffOutline />}
+              </button>
+
+              {/* Mic Toggle Button */}
+              <button
+                className={`p-3 text-xl font-semibold rounded-full shadow ${
+                  isAudioOn
+                    ? "bg-green-100 hover:bg-green-200 text-green-500" // Mic ON
+                    : "bg-red-100 hover:bg-red-200 text-red-500" // Mic OFF
+                }`}
+                onClick={toggleAudio}
+              >
+                {isAudioOn ? <MdOutlineMicNone /> : <MdOutlineMicOff />}
+              </button>
+
+            
+              <button
+                className="p-3 text-lg flex items-center gap-2 bg-red-100 hover:bg-red-200 text-red-500 font-semibold rounded-full shadow"
+                onClick={handleEndCall}
+              >
+                <FiLogOut /> <span className="hidden md:block">Leave</span> 
+              </button>
+            </>
+            )}
+            {isReceiving && myStream && !isStreamSent && (
+            <button
+              className="p-3 text-xl md:text-base  flex gap-2 items-center bg-blue-100 hover:bg-blue-200 text-blue-500 font-semibold rounded-full shadow"
+              onClick={sendStreams}
+            >
+              <MdIosShare /> <span className="hidden md:block">Send Stream</span>
+            </button>
+          )}
+        </div>
+</Draggable>
+        <Draggable>
+          <div className="relative w-1/3 h-[100px] cursor-grab md:h-[200px] bg-black rounded-xl md:rounded-3xl overflow-hidden mt-4 self-start">
             {myStream && isVideoOn ? (
               <ReactPlayer
                 playing
@@ -502,92 +438,9 @@ const handleEndCall = useCallback(() => {
             </span>
           </div>
         </Draggable>
+
+        
       </div>
-
-      {/* Draggable Button Group */}
-      {/* <Draggable defaultPosition={{ x: 0, y: 600 }}>
-        <div className="absolute flex gap-4 p-4 bg-white rounded-lg shadow-lg cursor-grab">
-          {isReceiving && myStream && !isStreamSent && (
-            <button
-              className="px-6 py-2 bg-blue-100 hover:bg-blue-200 text-blue-500 font-semibold rounded-lg shadow"
-              onClick={sendStreams}
-            >
-              <MdIosShare /> Send Stream
-            </button>
-          )}
-
-          {myStream && (
-            <>
-              <button
-                className="px-6 py-2 bg-white hover:bg-gray-200 text-gray-500 font-semibold rounded-lg shadow"
-                onClick={toggleVideo}
-              >
-                {isVideoOn ? <IoVideocamOutline /> : <IoVideocamOffOutline />}
-              </button>
-              <button
-                className="px-6 py-2 bg-white hover:bg-gray-200 text-gray-500 font-semibold rounded-lg shadow"
-                onClick={toggleAudio}
-              >
-                {isAudioOn ? <MdOutlineMicNone /> : <MdOutlineMicOff />}
-              </button>
-              <button
-                className="px-6 py-2 bg-red-100 hover:bg-red-200 text-red-500 font-semibold rounded-lg shadow"
-                onClick={handleEndCall}
-              >
-                <FiLogOut /> Leave
-              </button>
-            </>
-          )}
-        </div>
-      </Draggable> */}
-      <Draggable defaultPosition={{ x: 0, y: 600 }}>
-        <div className="absolute flex gap-4 p-4 bg-white rounded-lg shadow-lg cursor-grab">
-          {isReceiving && myStream && !isStreamSent && (
-            <button
-              className="px-6 py-2 bg-blue-100 hover:bg-blue-200 text-blue-500 font-semibold rounded-lg shadow"
-              onClick={sendStreams}
-            >
-              <MdIosShare /> Send Stream
-            </button>
-          )}
-
-          {myStream && (
-            <>
-              {/* Video Toggle Button */}
-              <button
-                className={`px-6 py-2 font-semibold rounded-lg shadow ${
-                  isVideoOn
-                    ? "bg-green-100 hover:bg-green-200 text-green-500" // Video ON
-                    : "bg-red-100 hover:bg-red-200 text-red-500" // Video OFF
-                }`}
-                onClick={toggleVideo}
-              >
-                {isVideoOn ? <IoVideocamOutline /> : <IoVideocamOffOutline />}
-              </button>
-
-              {/* Mic Toggle Button */}
-              <button
-                className={`px-6 py-2 font-semibold rounded-lg shadow ${
-                  isAudioOn
-                    ? "bg-green-100 hover:bg-green-200 text-green-500" // Mic ON
-                    : "bg-red-100 hover:bg-red-200 text-red-500" // Mic OFF
-                }`}
-                onClick={toggleAudio}
-              >
-                {isAudioOn ? <MdOutlineMicNone /> : <MdOutlineMicOff />}
-              </button>
-
-              {/* Leave Call Button */}
-              <button
-                className="px-6 py-2 bg-red-100 hover:bg-red-200 text-red-500 font-semibold rounded-lg shadow"
-                onClick={handleEndCall}
-              >
-                <FiLogOut /> Leave
-              </button>
-            </>
-          )}
-        </div>
-      </Draggable>
     </div>
   );
 };
