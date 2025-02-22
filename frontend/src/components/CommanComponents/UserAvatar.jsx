@@ -94,7 +94,7 @@ const UserProfile = () => {
         <div className="w-10 h-10 rounded overflow-hidden">
           <Avatar
             name={user?.name}
-            src={`${apiUrl}/uploads/${user?.profileImg}`}
+            src={user?.profileImg}
             size="40"
             className=" object-cover"
           />

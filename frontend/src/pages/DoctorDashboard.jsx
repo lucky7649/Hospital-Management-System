@@ -92,7 +92,7 @@ const apiUrl = process.env.REACT_APP_API_BASE_URL;
               <div className="w-10 h-10 rounded overflow-hidden">
                 <Avatar
                   name={doctor?.name}
-                  src={`${apiUrl}/uploads/${doctor?.profileImg}`}
+                  src={doctor?.profileImg}
                   size="40"
                   className="w-full h-full object-cover"
                 />

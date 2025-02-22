@@ -42,25 +42,15 @@ app.use("/api/v1", GeminiRoutes);
 //   res.json({ filePath: `${req.file.filename}` });
 // });
 // Upload Route
-app.post("/upload", upload.single("file"), async (req, res) => {
+app.post("/upload", upload.single("file"), (req, res) => {
   try {
-    // Check if file is uploaded
-    if (!req.file) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
-
-    // Upload to Cloudinary
-    const result = await cloudinary.uploader.upload(req.file.path, {
-      folder: "profile_pictures",
+    // Cloudinary response is stored in req.file
+    res.status(200).json({
+      url: req.file.path, // Secure URL of the uploaded image
+      filename: req.file.filename, // File name on Cloudinary
     });
-
-    // Delete local file after upload
-    fs.unlinkSync(req.file.path);
-
-    // Return Cloudinary URL
-    res.status(200).json({ secure_url: result.secure_url });
   } catch (error) {
-    console.error("Cloudinary Upload Error:", error);  // Improved logging
+    console.error("Upload Error:", error);
     res.status(500).json({ error: error.message });
   }
 });

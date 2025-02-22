@@ -42,13 +42,18 @@ const [error, setError] = useState(null);
   //       profileImg: filePath,
   //     });
   // };
-  const handleFileUpload = (filePath) => {
-    console.log("Cloudinary URL:", filePath); // Debug to check the URL
-    setFormData((prevData) => ({
-      ...prevData,
-      profileImg: filePath,
-    }));
-  };
+const handleFileUpload = (filePath) => {
+  console.log("Cloudinary URL:", filePath); // Check if the URL is logged
+  if (!filePath) {
+    console.error("No file URL received from Cloudinary.");
+    return;
+  }
+  setFormData((prevData) => ({
+    ...prevData,
+    profileImg: filePath,
+  }));
+};
+
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
@@ -98,6 +103,9 @@ const [error, setError] = useState(null);
       setLoading(false);
     }
   }
+
+
+
   const DOB = formData?.dateOfBirth ? formData.dateOfBirth.split("T")[0] : "N/A";
 
 
@@ -112,7 +120,7 @@ const [error, setError] = useState(null);
               <div className="w-96 h-[50vh] border-2 border-dashed rounded-xl border-gray-300  flex justify-center items-center cursor-pointer hover:bg-gray-100  transition p-4">
                 <div className="flex justify-center items-center w-full h-full">
                   <img
-                    src={`${apiUrl}/uploads/${formData?.profileImg}`}
+                    src={formData?.profileImg}
                     alt={`${formData?.name}`}
                     className="object-contain w-full h-full"
                   />
