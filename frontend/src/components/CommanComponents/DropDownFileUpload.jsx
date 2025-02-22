@@ -20,33 +20,36 @@ const DragDropFileUpload = ({
     }
   }, [defaultImage]);
 
-  const onDrop = useCallback(
-    async (acceptedFiles) => {
-      const file = acceptedFiles[0];
-      setSelectedFile(file);
+const onDrop = useCallback(
+  async (acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setSelectedFile(file);
 
-      // Generate preview URL for the selected image
-      const filePreviewUrl = URL.createObjectURL(file);
-      setPreviewUrl(filePreviewUrl);
+    // Generate preview URL for the selected image
+    const filePreviewUrl = URL.createObjectURL(file);
+    setPreviewUrl(filePreviewUrl);
 
-      const formData = new FormData();
-      formData.append("file", file);
+    const formData = new FormData();
+    formData.append("file", file);
 
-      try {
-        const res = await axios.post("http://localhost:1000/upload", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+    try {
      
+      const res = await axios.post(`${apiUrl}/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
-        if (res.data.filePath) {
-          onFileUpload(res.data.filePath);
-        }
-      } catch (err) {
-        console.error("Upload error", err);
+    
+      if (res.data.secure_url) {
+        setPreviewUrl(res.data.secure_url); // Show Cloudinary URL as preview
+        onFileUpload(res.data.secure_url); // Pass Cloudinary URL to parent component
       }
-    },
-    [onFileUpload]
-  );
+    } catch (err) {
+      console.error("Cloudinary Upload Error:", err);
+    }
+  },
+  [onFileUpload, apiUrl]
+);
+
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 

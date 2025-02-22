@@ -1,9 +1,10 @@
-import './App.css';
+
 import Footer from "./components/CommanComponents/Footer";
 import Navbar from "./components/CommanComponents/Navbar";
 import AllDoctors from './pages/AllDoctors';
 // import BookAppointment from './pages/BookAppointment';
 import Home from './pages/Home';
+import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';

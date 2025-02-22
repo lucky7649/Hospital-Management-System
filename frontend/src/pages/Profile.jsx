@@ -36,13 +36,19 @@ const [error, setError] = useState(null);
       });
   };
   
-    const handleFileUpload = (filePath) => {
-      setFormData({
-        ...formData,
-        profileImg: filePath,
-      });
+  //   const handleFileUpload = (filePath) => {
+  //     setFormData({
+  //       ...formData,
+  //       profileImg: filePath,
+  //     });
+  // };
+  const handleFileUpload = (filePath) => {
+    console.log("Cloudinary URL:", filePath); // Debug to check the URL
+    setFormData((prevData) => ({
+      ...prevData,
+      profileImg: filePath,
+    }));
   };
-  
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
     useEffect(() => {
