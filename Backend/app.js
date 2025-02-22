@@ -40,6 +40,10 @@ app.post("/upload", upload.single("file"), (req, res) => {
   res.json({ filePath: `${req.file.filename}` });
 });
 
+app.get("/", (req, res) => { 
+  res.send("Welcome to Hospital Management System");
+})
+
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app); // Create a server instance
 
