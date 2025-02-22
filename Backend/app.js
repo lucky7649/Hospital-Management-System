@@ -17,7 +17,12 @@ const Prescription = require("./routes/prescription");
 const GeminiRoutes = require("./routes/geminiRoute");
 const initializeSocketServer = require("./socketConnections/socket");
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://medicare-hms.vercel.app",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use("/api/v1", user);
