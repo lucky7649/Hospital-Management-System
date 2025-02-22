@@ -156,7 +156,7 @@ const Patient = () => {
             ))}
           </div>
 
-          {/* Content for Active Tab */}
+       
           {activeTab === "Patients" && (
             <>
               {/* Header */}
@@ -214,7 +214,7 @@ const Patient = () => {
                             <div className=" rounded overflow-hidden">
                               <Avatar
                                 name={patient?.name}
-                                src={`${apiUrl}/uploads/${patient?.profileImg}`}
+                                src={patient?.profileImg}
                                 size="50"
                                 className="rounded-xl"
                               />
@@ -593,7 +593,7 @@ const Patient = () => {
             </>
           )}
 
-          {/* Placeholder for Other Tabs */}
+       
           {activeTab !== "Patients" && (
             <div className="text-center text-gray-600">
               <h2 className="text-xl font-bold">{activeTab} Section</h2>

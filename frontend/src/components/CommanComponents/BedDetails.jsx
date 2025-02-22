@@ -107,7 +107,7 @@ const BedDetails = () => {
                 <div className="flex items-center gap-4">
                   <Avatar
                     name={patientData?.name}
-                    src={`${apiUrl}/uploads/${patientData?.profileImg}`}
+                    src={patientData?.profileImg}
                     className="rounded-xl"
                     size="50"
                   />

@@ -325,7 +325,7 @@ const handleStartCall = (roomId) => {
                     </div>
                     <Avatar
                       name={appointment?.patientId?.name}
-                      src={appointment?.patientId?.avatar}
+                      src={appointment?.patientId?.profileImg}
                       round={true}
                       size="40"
                       className="shadow-sm"

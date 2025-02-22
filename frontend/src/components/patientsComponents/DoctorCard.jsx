@@ -29,7 +29,7 @@ const DoctorCard = ({ data }) => {
       >
         <Avatar
           name={data?.name}
-          src={`${apiUrl}/uploads/${data?.profileImg}`}
+          src={data?.profileImg}
           className="rounded-2xl shadow-md object-cover"
           size={avatarSize}
         />

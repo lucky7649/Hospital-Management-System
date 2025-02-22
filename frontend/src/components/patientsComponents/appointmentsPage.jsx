@@ -218,7 +218,7 @@ export default function AppointmentsPage() {
                         <td className="py-4 px-4 flex items-center space-x-3 text-sm">
                           <Avatar
                             name={appt?.doctor?.name}
-                            src={`http://localhost:1000/uploads/${appt?.doctor?.profileImg}`}
+                            src={appt?.doctor?.profileImg}
                             className="rounded-xl shadow-sm "
                             size="60"
                           />

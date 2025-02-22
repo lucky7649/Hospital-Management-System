@@ -30,18 +30,7 @@ app.use("/api/v1", Prescription);
 app.use("/api/v1", GeminiRoutes);
 
 
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// app.post("/upload", upload.single("file"), (req, res) => {
-//   console.log("File Uploaded:", req.file);
-
-//   if (!req.file) {
-//     return res.status(400).json({ error: "No file uploaded" });
-//   }
-
-//   res.json({ filePath: `${req.file.filename}` });
-// });
-// Upload Route
 app.post("/upload", upload.single("file"), (req, res) => {
   try {
     // Cloudinary response is stored in req.file

@@ -329,7 +329,7 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer ">
                               <Avatar
                                 name={doctor?.name}
-                                src={`${apiUrl}/uploads/${doctor?.profileImg}`}
+                                src={doctor?.profileImg}
                                 className="rounded-xl shadow-sm"
                                 size="50"
                               />
@@ -450,7 +450,7 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer">
                               <Avatar
                                 name={receptionist?.name}
-                                src={`${apiUrl}/uploads/${receptionist?.profileImg}`}
+                                src={receptionist?.profileImg}
                                 className="rounded-xl"
                                 size="50"
                               />
@@ -572,7 +572,7 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer">
                               <Avatar
                                 name={admin?.name}
-                                src={`${apiUrl}/uploads/${admin?.profileImg}`}
+                                src={admin?.profileImg}
                                 className="rounded-xl"
                                 size="50"
                               />
