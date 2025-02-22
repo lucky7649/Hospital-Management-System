@@ -69,9 +69,10 @@ const healthData = [
       borderColor: "border-green-500",
     },
   ];
-
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
   // Fetch Appointments
   const fetchAppointments = useCallback(async () => {
+  
     try {
       const headers = {
         id: localStorage.getItem("id"),
@@ -79,7 +80,7 @@ const healthData = [
       };
 
       const response = await axios.get(
-        `http://localhost:1000/api/v1/find-patient-appointments/${user._id}`,
+        `${apiUrl}/api/v1/find-patient-appointments/${user._id}`,
         { headers }
       );
       const appointmentsData = response.data.data;
@@ -90,7 +91,7 @@ const healthData = [
 
           try {
             const doctorResponse = await axios.get(
-              `http://localhost:1000/api/v1/get-staff/${appointment.doctorId}`,
+              `${apiUrl}/api/v1/get-staff/${appointment.doctorId}`,
               { headers }
             );
             return { ...appointment, doctor: doctorResponse.data.data };
@@ -216,7 +217,7 @@ const healthData = [
                           <div className="flex gap-3">
                             <Avatar
                               name={appt?.doctor?.name}
-                              src={`http://localhost:1000/uploads/${appt?.doctor?.profileImg}`}
+                              src={`${apiUrl}/uploads/${appt?.doctor?.profileImg}`}
                               size="50"
                               className="rounded-xl"
                             />

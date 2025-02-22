@@ -12,6 +12,7 @@ function ReportAnalysis({ onBack }) {
 
   const handleSymptomsChange = (e) => setSymptoms(e.target.value);
   const handleFileChange = (e) => setFile(e.target.files[0]);
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ function ReportAnalysis({ onBack }) {
       if (file) formData.append("file", file);
 
       const result = await axios.post(
-        "http://localhost:1000/api/v1/report-analysis",
+        `${apiUrl}/api/v1/report-analysis`,
         formData,
         { headers: { "Content-Type": "multipart/form-data" } }
       );

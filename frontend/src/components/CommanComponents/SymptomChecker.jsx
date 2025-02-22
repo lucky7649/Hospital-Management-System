@@ -25,73 +25,10 @@ function SymptomsChecker({ onBack }) {
   const [finalResult, setFinalResult] = useState("");
   const [input, setInput] = useState("");
   const [isThinking, setIsThinking] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
-  // Handle user input submission
-  //   const handleUserInput = async () => {
-  //     if (!input.trim()) return; // Prevent empty input
-
-  //     setMessages((prev) => [...prev, { sender: "user", text: input }]);
-
-  //     if (step === 1) {
-  //       setName(input);
-  //       setMessages((prev) => [
-  //         ...prev,
-  //         { sender: "bot", text: `Nice to meet you, ${input}!` },
-  //         { sender: "bot", text: "2️⃣ What is your age?" },
-  //       ]);
-  //       setStep(2);
-  //     } else if (step === 2) {
-  //       setAge(input);
-  //       setMessages((prev) => [
-  //         ...prev,
-  //         { sender: "bot", text: "3️⃣ Select your gender: (Male / Female)" },
-  //       ]);
-  //       setStep(3);
-  //     } else if (step === 3) {
-  //       // Handle gender selection
-  //       if (input.toLowerCase() === "male" || input.toLowerCase() === "female") {
-  //         setGender(input);
-  //         setMessages((prev) => [
-  //           ...prev,
-  //           { sender: "bot", text: `You selected: ${input}.` },
-  //           {
-  //             sender: "bot",
-  //             text: "4️⃣ Please enter your symptoms (Type 'done' when finished):",
-  //           },
-  //         ]);
-  //         setStep(4);
-  //       } else {
-  //         setMessages((prev) => [
-  //           ...prev,
-  //           {
-  //             sender: "bot",
-  //             text: "❌ Invalid gender. Please enter 'Male' or 'Female'.",
-  //           },
-  //         ]);
-  //       }
-  //     } else if (step === 4) {
-  //       if (input.toLowerCase() === "done") {
-  //         setMessages((prev) => [
-  //           ...prev,
-  //           { sender: "bot", text: "🔍 Analyzing your symptoms..." },
-  //         ]);
-  //         await checkSymptoms();
-  //       } else {
-  //         setSymptoms((prev) => [...prev, input]);
-  //         setMessages((prev) => [
-  //           ...prev,
-  //           {
-  //             sender: "bot",
-  //             text: "Add more symptoms or type 'done' to finish:",
-  //           },
-  //         ]);
-  //       }
-  //     }
-
-  //     setInput(""); // Clear input field after submission
-  //   };
   const handleUserInput = async () => {
-    if (!input.trim()) return; // Prevent empty input
+    if (!input.trim()) return; 
 
     setMessages((prev) => [...prev, { sender: "user", text: input }]);
 
@@ -175,14 +112,11 @@ function SymptomsChecker({ onBack }) {
   const checkSymptoms = async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        "http://localhost:1000/api/v1/check-symptoms",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ age, gender, symptoms }),
-        }
-      );
+      const response = await fetch(`${apiUrl}/api/v1/check-symptoms`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ age, gender, symptoms }),
+      });
       const data = await response.json();
       setFinalResult(data.response);
       setMessages((prev) => [

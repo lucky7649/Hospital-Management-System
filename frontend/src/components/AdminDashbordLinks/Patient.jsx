@@ -35,13 +35,11 @@ const Patient = () => {
     gender: "",
   });
 
-  // Corrected useEffect to use an async function inside
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:1000/api/v1/patients`
-        );
+        const response = await axios.get(`${apiUrl}/api/v1/patients`);
         if (Array.isArray(response.data.patients)) {
           setPatientData(response.data.patients);
         } else {
@@ -65,7 +63,7 @@ const Patient = () => {
   // Function to refresh the patient list
   const handleRefresh = async () => {
     try {
-      const response = await axios.get(`http://localhost:1000/api/v1/patients`);
+      const response = await axios.get(`${apiUrl}/api/v1/patients`);
       console.log("Refreshed Data:", response.data); // Debugging the refreshed data
       if (Array.isArray(response.data.patients)) {
         setPatientData(response.data.patients);
@@ -102,7 +100,7 @@ const Patient = () => {
     try {
       // Send updated patient details to the server
       await axios.put(
-        `http://localhost:1000/api/v1/update-patient/${selectedPatient._id}`,
+        `${apiUrl}/api/v1/update-patient/${selectedPatient._id}`,
         selectedPatient
       );
       toast.success("Patient details updated successfully");
@@ -120,7 +118,7 @@ const Patient = () => {
    try {
      // Send updated patient details to the server
      await axios.delete(
-       `http://localhost:1000/api/v1/delete-patient/${selectedPatient._id}`,
+       `${apiUrl}/api/v1/delete-patient/${selectedPatient._id}`,
        selectedPatient
      );
      toast.success("Patient Deleted successfully");
@@ -216,7 +214,7 @@ const Patient = () => {
                             <div className=" rounded overflow-hidden">
                               <Avatar
                                 name={patient?.name}
-                                src={`http://localhost:1000/uploads/${patient?.profileImg}`}
+                                src={`${apiUrl}/uploads/${patient?.profileImg}`}
                                 size="50"
                                 className="rounded-xl"
                               />

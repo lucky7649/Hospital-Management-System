@@ -138,12 +138,12 @@ const AdminDashboard = () => {
     id: localStorage.getItem("id"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
   };
-
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1000/api/v1/get-user-information`,
+          `${apiUrl}/api/v1/get-user-information`,
           { headers }
         );
         setUser(response.data.data);
@@ -202,7 +202,7 @@ const AdminDashboard = () => {
               <div className="w-10 h-10 rounded overflow-hidden">
                 <Avatar
                   name={user?.name}
-                  src={`http://localhost:1000/uploads/${user?.profileImg}`}
+                  src={`${apiUrl}/uploads/${user?.profileImg}`}
                   size="40"
                   className="w-full h-full object-cover"
                 />

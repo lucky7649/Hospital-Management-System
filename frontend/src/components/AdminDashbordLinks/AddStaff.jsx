@@ -87,17 +87,17 @@ const handlePhoneChange = (e) => {
     ...Data,
     phone: `${currentCountryCode} ${phoneWithoutCode}`,
   });
-};
+  };
+  
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
 const handleSubmit = async (e) => {
   e.preventDefault(); 
   try {
     // Send a POST request to the server with the form data and headers
-    const response = await axios.post(
-      "http://localhost:1000/api/v1/add-staff",
-      Data,
-      { headers }
-    );
+    const response = await axios.post(`${apiUrl}/api/v1/add-staff`, Data, {
+      headers,
+    });
 
    
     toast.success(response.data.message);

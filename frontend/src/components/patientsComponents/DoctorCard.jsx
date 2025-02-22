@@ -6,6 +6,7 @@ import Avatar from "react-avatar";
 
 
 const DoctorCard = ({ data }) => {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const navigate = useNavigate();
 
   const [avatarSize, setAvatarSize] = useState(
@@ -28,7 +29,7 @@ const DoctorCard = ({ data }) => {
       >
         <Avatar
           name={data?.name}
-          src={`http://localhost:1000/uploads/${data?.profileImg}`}
+          src={`${apiUrl}/uploads/${data?.profileImg}`}
           className="rounded-2xl shadow-md object-cover"
           size={avatarSize}
         />

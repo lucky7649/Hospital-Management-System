@@ -23,19 +23,18 @@ const DoctorDashboard = () => {
     );
 
   const id = localStorage.getItem("userId");
-
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
   useEffect(() => {
     if (!id) {
       setError("No ID found in localStorage.");
       setLoading(false);
       return;
     }
+    
 
     const fetchDoctor = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:1000/api/v1/get-staff/${id}`
-        );
+        const response = await axios.get(`${apiUrl}/api/v1/get-staff/${id}`);
         setDoctor(response.data.data);
       } catch (err) {
         setError("Failed to fetch doctor data.");
@@ -93,7 +92,7 @@ const DoctorDashboard = () => {
               <div className="w-10 h-10 rounded overflow-hidden">
                 <Avatar
                   name={doctor?.name}
-                  src={`http://localhost:1000/uploads/${doctor?.profileImg}`}
+                  src={`${apiUrl}/uploads/${doctor?.profileImg}`}
                   size="40"
                   className="w-full h-full object-cover"
                 />

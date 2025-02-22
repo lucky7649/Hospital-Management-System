@@ -11,6 +11,7 @@ const AllDoctor = () => {
     location: "",
     rating: "",
   });
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Fetch doctors with pagination and filters
   useEffect(() => {
@@ -20,10 +21,9 @@ const AllDoctor = () => {
         ...filters, // Including filters in the API request
       };
       try {
-        const response = await axios.get(
-          `http://localhost:1000/api/v1/get-doctor-data`,
-          { params }
-        );
+        const response = await axios.get(`${apiUrl}/api/v1/get-doctor-data`, {
+          params,
+        });
         setData(response.data.doctors);
       } catch (err) {
         console.error("Error fetching doctors", err);

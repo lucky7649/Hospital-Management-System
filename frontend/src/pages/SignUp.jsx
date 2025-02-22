@@ -28,6 +28,8 @@ const SignUp = () => {
     }));
   };
 
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -40,7 +42,7 @@ const SignUp = () => {
     }
 
     try {
-     await axios.post(`http://localhost:1000/api/v1/sign-up`, {
+     await axios.post(`${apiUrl}/api/v1/sign-up`, {
        name: Values.name,
        email: Values.email,
        username: Values.username,

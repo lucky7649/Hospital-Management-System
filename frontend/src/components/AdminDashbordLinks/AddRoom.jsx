@@ -28,6 +28,7 @@ const AddRooms = () => {
     id: localStorage.getItem("userId"),
     authorization: `Bearer ${localStorage.getItem("token")}`,
   };
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
      
 
@@ -42,11 +43,9 @@ const AddRooms = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:1000/api/v1/add-room",
-        Data,
-        { headers }
-      );
+      const response = await axios.post(`${apiUrl}/api/v1/add-room`, Data, {
+        headers,
+      });
       toast.success(response.data.message);
       setMessage(response.data.message);
       openModal(true)

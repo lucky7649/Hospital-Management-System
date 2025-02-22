@@ -23,6 +23,7 @@ const DoctorAppointment = () => {
   const patientId = selectedPatient?._id;
   const doctorId = localStorage.getItem("userId");
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const fetchAppointments = async () => {
     setLoading(true);
@@ -42,7 +43,7 @@ const DoctorAppointment = () => {
       };
 
       const response = await axios.get(
-        `http://localhost:1000/api/v1/appointments/${doctorId}`,
+        `${apiUrl}/api/v1/appointments/${doctorId}`,
         { headers }
       );
 
@@ -101,7 +102,7 @@ const DoctorAppointment = () => {
         ) {
           const message = `Hello ${nextAppointment.patientId.name}, your appointment is up. Please proceed to the consultation.`;
           try {
-            await axios.post("http://localhost:1000/api/v1/send-sms", {
+            await axios.post(`${apiUrl}/api/v1/send-sms`, {
               phoneNumber: nextAppointment.patientId.phone,
               message,
             });
@@ -230,7 +231,7 @@ const handleStartCall = (roomId) => {
 
       // Make the API request to update the status of the selected appointment
       const response = await axios.put(
-        `http://localhost:1000/api/v1/update-appointment/${selectedAppointment}`,
+        `${apiUrl}/api/v1/update-appointment/${selectedAppointment}`,
         { status: "completed" }, // You can send the status here, or just update on the server side
         { headers }
       );

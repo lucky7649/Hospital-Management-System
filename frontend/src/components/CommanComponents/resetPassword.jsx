@@ -13,6 +13,7 @@ const ResetPassword = () => {
 
   // Extract token from the URL
   const token = new URLSearchParams(location.search).get("token");
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -35,10 +36,10 @@ const ResetPassword = () => {
 
     try {
       // Make POST request to reset password API endpoint
-      const response = await axios.post(
-        "http://localhost:1000/api/v1/reset-password",
-        { token, newPassword }
-      );
+      const response = await axios.post(`${apiUrl}/api/v1/reset-password`, {
+        token,
+        newPassword,
+      });
 
         setMessage(response.data.message);
         toast.success("Password Updated Success")

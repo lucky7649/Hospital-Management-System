@@ -22,7 +22,7 @@ const LogIn = () => {
   const dispatch = useDispatch();
 
 
-
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   
 const handleSubmit = async (e) => {
@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
   setIsLoading(true);
 
   try {
-    const response = await axios.post(`http://localhost:1000/api/v1/sign-in`, {
+    const response = await axios.post(`${apiUrl}/api/v1/sign-in`, {
       usernameOremail,
       password,
     });

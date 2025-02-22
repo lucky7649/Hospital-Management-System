@@ -43,13 +43,11 @@ const Staff = () => {
         profileImg: filePath,
       });
     };
-
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
    useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:1000/api/v1/get-doctor-data`
-        );
+        const response = await axios.get(`${apiUrl}/api/v1/get-doctor-data`);
         if (Array.isArray(response.data.doctors)) {
           setDoctorData(response.data.doctors);
         } else {
@@ -65,7 +63,7 @@ const Staff = () => {
     const fetchReceptionist = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1000/api/v1/get-receptionist-data`
+          `${apiUrl}/api/v1/get-receptionist-data`
         );
         if (Array.isArray(response.data.receptionist)) {
           setReceptionistData(response.data.receptionist);
@@ -80,9 +78,7 @@ const Staff = () => {
 
      const fetchAdmins = async () => {
        try {
-         const response = await axios.get(
-           `http://localhost:1000/api/v1/admins`
-         );
+         const response = await axios.get(`${apiUrl}/api/v1/admins`);
          if (Array.isArray(response.data.admins)) {
            console.log(response.data.admins)
            setAdminsData(response.data.admins);
@@ -99,9 +95,7 @@ const Staff = () => {
 
     const handleDoctorRefresh = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:1000/api/v1/get-doctor-data`
-        );
+        const response = await axios.get(`${apiUrl}/api/v1/get-doctor-data`);
         if (Array.isArray(response.data.doctors)) {
           setDoctorData(response.data.doctors);
           toast.success("Refreshed Doctor Data");
@@ -116,7 +110,7 @@ const Staff = () => {
       const handleReceptionistRefresh = async () => {
         try {
           const response = await axios.get(
-            `http://localhost:1000/api/v1/get-receptionist-data`
+            `${apiUrl}/api/v1/get-receptionist-data`
           );
           if (Array.isArray(response.data.receptionist)) {
             setReceptionistData(response.data.receptionist);
@@ -134,9 +128,7 @@ const Staff = () => {
   
    const handleAdminsRefresh = async () => {
      try {
-       const response = await axios.get(
-         `http://localhost:1000/api/v1/admins`
-       );
+       const response = await axios.get(`${apiUrl}/api/v1/admins`);
        if (Array.isArray(response.data.admins)) {
          setAdminsData(response.data.admins);
          toast.success("Refreshed Admins Data");
@@ -189,11 +181,11 @@ const closeDeleteModal = () => {
 
       let endpoint = "";
       if (type === "Doctor") {
-        endpoint = `http://localhost:1000/api/v1/update-staff/${staffDetails._id}`;
+        endpoint = `${apiUrl}/api/v1/update-staff/${staffDetails._id}`;
       } else if (type === "Receptionist") {
-        endpoint = `http://localhost:1000/api/v1/update-staff/${staffDetails._id}`;
+        endpoint = `${apiUrl}/api/v1/update-staff/${staffDetails._id}`;
       } else if (type === "Admin") {
-        endpoint = `http://localhost:1000/api/v1/update-admin/${staffDetails._id}`;
+        endpoint = `${apiUrl}/api/v1/update-admin/${staffDetails._id}`;
       }
 
       const response = await axios.put(endpoint, staffDetails,{headers});
@@ -229,9 +221,9 @@ const closeDeleteModal = () => {
 
       let endpoint = "";
       if (type === "Doctor" || type === "Receptionist") {
-        endpoint = `http://localhost:1000/api/v1/delete-staff/${selectedStaff._id}`;
+        endpoint = `${apiUrl}/api/v1/delete-staff/${selectedStaff._id}`;
      } else if (type === "Admin") {
-        endpoint = `http://localhost:1000/api/v1/delete-admin/${selectedStaff._id}`;
+        endpoint = `${apiUrl}/api/v1/delete-admin/${selectedStaff._id}`;
       }
 
       const response = await axios.delete(endpoint,{headers});
@@ -337,7 +329,7 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer ">
                               <Avatar
                                 name={doctor?.name}
-                                src={`http://localhost:1000/uploads/${doctor?.profileImg}`}
+                                src={`${apiUrl}/uploads/${doctor?.profileImg}`}
                                 className="rounded-xl shadow-sm"
                                 size="50"
                               />
@@ -458,7 +450,7 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer">
                               <Avatar
                                 name={receptionist?.name}
-                                src={`http://localhost:1000/uploads/${receptionist?.profileImg}`}
+                                src={`${apiUrl}/uploads/${receptionist?.profileImg}`}
                                 className="rounded-xl"
                                 size="50"
                               />
@@ -580,7 +572,7 @@ const closeDeleteModal = () => {
                             <div className="flex items-center space-x-3 cursor-pointer">
                               <Avatar
                                 name={admin?.name}
-                                src={`http://localhost:1000/uploads/${admin?.profileImg}`}
+                                src={`${apiUrl}/uploads/${admin?.profileImg}`}
                                 className="rounded-xl"
                                 size="50"
                               />

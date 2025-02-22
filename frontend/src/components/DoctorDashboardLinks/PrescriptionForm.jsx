@@ -12,6 +12,7 @@ const PrescriptionForm = ({ patientId, doctorId, selectedPatient }) => {
   const [error, setError] = useState(null);
   const [submittedPrescription, setSubmittedPrescription] = useState(null);
   const [formVisible, setFormVisible] = useState(true);
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const medicineSuggestions = [
     "Paracetamol",
@@ -77,7 +78,7 @@ const PrescriptionForm = ({ patientId, doctorId, selectedPatient }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:1000/api/v1/add-prescription",
+        `${apiUrl}/api/v1/add-prescription`,
         payload,
         {
           headers: {

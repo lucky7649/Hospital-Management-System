@@ -21,13 +21,14 @@ const UserProfile = () => {
     authorization: `Bearer ${localStorage.getItem("token")}`,
   };
   const dispatch = useDispatch();
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1000/api/v1/get-user-information`,
+          `${apiUrl}/api/v1/get-user-information`,
           { headers }
         );
         setUser(response.data.data);
@@ -41,43 +42,6 @@ const UserProfile = () => {
     fetchUser();
   }, []);
 
-// const handleLogout = async () => {
-//   try {
-//     const userId = localStorage.getItem("userId");
-//     console.log(userId);
-
-//     if (!userId) {
-//       throw new Error("User not logged in");
-//     }
-
-  
-
-//     localStorage.removeItem("authToken");
-//     localStorage.removeItem("userId");
-
-//     dispatch(authActions.logout());
-
-  
-//  try {
-//    const response = await axios.post("http://localhost:1000/api/v1/logout", {
-//      userId,
-//    });
-//    console.log(response.data);
-//  } catch (error) {
-//    console.error("Logout failed:", error);
- 
-//  }
-
-
-//     navigate("/");
-
- 
-//     toast.success("Logout successful");
-//   } catch (error) {
-//     console.error("Logout failed", error);
-//     toast.error("Logout failed. Please try again.");
-//   }
-  // };
   const handleLogout = async () => {
     try {
       const userId = localStorage.getItem("userId");
@@ -130,7 +94,7 @@ const UserProfile = () => {
         <div className="w-10 h-10 rounded overflow-hidden">
           <Avatar
             name={user?.name}
-            src={`http://localhost:1000/uploads/${user?.profileImg}`}
+            src={`${apiUrl}/uploads/${user?.profileImg}`}
             size="40"
             className=" object-cover"
           />

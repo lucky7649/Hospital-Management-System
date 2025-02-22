@@ -10,6 +10,7 @@ import {
   RiPhoneLine,
 } from "react-icons/ri";
 import Avatar from "react-avatar";
+const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
 const BedDetails = () => {
   const { roomId, bedId } = useParams();
@@ -22,13 +23,13 @@ const BedDetails = () => {
     const fetchBedDetails = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1000/api/v1/view-bed-details/${roomId}/${bedId}`
+          `${apiUrl}/api/v1/view-bed-details/${roomId}/${bedId}`
         );
 
         setData(response.data);
         if (response.data.isOccupied && response.data.occupant) {
           const patientResponse = await axios.get(
-            `http://localhost:1000/api/v1/patient/${response.data.occupant}`
+            `${apiUrl}/api/v1/patient/${response.data.occupant}`
           );
           setPatientData(patientResponse.data.patient);
         }
@@ -106,7 +107,7 @@ const BedDetails = () => {
                 <div className="flex items-center gap-4">
                   <Avatar
                     name={patientData?.name}
-                    src={`http://localhost:1000/uploads/${patientData?.profileImg}`}
+                    src={`${apiUrl}/uploads/${patientData?.profileImg}`}
                     className="rounded-xl"
                     size="50"
                   />

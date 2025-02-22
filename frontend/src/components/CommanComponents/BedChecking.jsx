@@ -11,6 +11,7 @@ import {
 import { DotLoader } from "react-spinners";
 
 const BedChecking = ({ onRefresh }) => {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const handleRefresh = () => {
     window.location.reload(); // Reloads the current page
   };
@@ -21,9 +22,7 @@ const BedChecking = ({ onRefresh }) => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:1000/api/v1/get-rooms`
-        );
+        const response = await axios.get(`${apiUrl}/api/v1/get-rooms`);
         if (Array.isArray(response.data)) {
           setData(response.data); // Directly set the array of rooms
         } else {

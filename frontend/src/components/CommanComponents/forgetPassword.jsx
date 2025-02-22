@@ -7,6 +7,7 @@ const ForgetPassword = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [isLinkSent, setIsLinkSent] = useState(false); 
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -24,10 +25,9 @@ const ForgetPassword = () => {
 
     try {
       // Make the POST request to the API endpoint
-      const response = await axios.post(
-        "http://localhost:1000/api/v1/forget-password",
-        { email }
-      );
+      const response = await axios.post(`${apiUrl}/api/v1/forget-password`, {
+        email,
+      });
 
       // If email is sent successfully, display success message
       setMessage(response.data.message);

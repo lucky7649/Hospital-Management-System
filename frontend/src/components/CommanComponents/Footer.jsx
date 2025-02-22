@@ -108,11 +108,11 @@ const Footer = () => {
           <h3 className="text-xl font-semibold mb-3">Contact Us</h3>
           <div className="flex items-center justify-center md:justify-start space-x-3 mb-2">
             <FaMapMarkerAlt className="text-blue-400" />
-            <p>123 Health St, Bhopal, India</p>
+            <p>Medicare, Bhopal, India</p>
           </div>
           <div className="flex items-center justify-center md:justify-start space-x-3 mb-2">
             <FaEnvelope className="text-blue-400" />
-            <p>support@yourhospital.com</p>
+            <p>medicare@yourhospital.com</p>
           </div>
           <div className="flex items-center justify-center md:justify-start space-x-3">
             <FaPhone className="text-blue-400" />
@@ -152,9 +152,9 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright */}
+     
       <div className="text-center text-gray-500 mt-10 border-t border-gray-700 pt-5">
-        &copy; {new Date().getFullYear()} Your Hospital Name. All Rights
+        &copy; {new Date().getFullYear()} Medicare. All Rights
         Reserved.
       </div>
     </footer>

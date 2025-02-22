@@ -9,6 +9,7 @@ const DragDropFileUpload = ({
   width = "24rem",
   defaultImage, // Accept default image as prop
 }) => {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(defaultImage || null); // Initialize with defaultImage
 
@@ -62,7 +63,7 @@ const DragDropFileUpload = ({
             src={
               previewUrl.startsWith("blob") || previewUrl.startsWith("http")
                 ? previewUrl // If it's a local blob or a full URL, use it
-                : `http://localhost:1000/uploads/${previewUrl}` // Otherwise, prepend the base URL
+                : `${apiUrl}/uploads/${previewUrl}` // Otherwise, prepend the base URL
             }
             alt="Preview"
             className="object-contain w-full h-full"

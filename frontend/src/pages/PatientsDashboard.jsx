@@ -29,12 +29,11 @@ const BedChecking = lazy(() =>
 );
 
 const PatientDashboard = () => {
-  const { activeSection, setActiveSection } = useActiveSection(); // Use global state
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
+  const { activeSection, setActiveSection } = useActiveSection(); 
+  
 
-  // const savedActiveSection = localStorage.getItem("activeSection");
-  // const [activeSection, setActiveSection] = useState(
-  //   savedActiveSection || "dashboard"
-  // );
+
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
     window.innerWidth < 768
   );
@@ -49,11 +48,13 @@ const PatientDashboard = () => {
     authorization: `Bearer ${localStorage.getItem("token")}`,
   };
 
+ 
+
   useEffect(() => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1000/api/v1/get-user-information`,
+          `${apiUrl}/api/v1/get-user-information`,
           { headers }
         );
         setUser(response.data.data);
@@ -126,7 +127,7 @@ const PatientDashboard = () => {
               <div className="w-10 h-10 rounded overflow-hidden">
                 <Avatar
                   name={user?.name}
-                  src={`http://localhost:1000/uploads/${user?.profileImg}`}
+                  src={`${apiUrl}/uploads/${user?.profileImg}`}
                   size="40"
                   className="w-full h-full object-cover"
                 />

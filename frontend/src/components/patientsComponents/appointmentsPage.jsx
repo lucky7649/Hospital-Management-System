@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { FiClock, FiMapPin, FiMoreVertical } from "react-icons/fi";
 import axios from "axios";
@@ -8,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { AiOutlineFileSearch } from "react-icons/ai";
 
 export default function AppointmentsPage() {
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
   const [appointments, setAppointments] = useState([]);
   const [user, setUser] = useState(null);
   const capitalize = (str) => {
@@ -23,7 +23,7 @@ export default function AppointmentsPage() {
         };
 
         const response = await axios.get(
-          "http://localhost:1000/api/v1/get-user-information",
+          `${apiUrl}/api/v1/get-user-information`,
           { headers }
         );
 
@@ -51,7 +51,7 @@ export default function AppointmentsPage() {
       };
 
       const response = await axios.get(
-        `http://localhost:1000/api/v1/find-patient-appointments/${userId}`,
+        `${apiUrl}/api/v1/find-patient-appointments/${userId}`,
         { headers }
       );
 
@@ -63,7 +63,7 @@ export default function AppointmentsPage() {
 
           try {
             const doctorResponse = await axios.get(
-              `http://localhost:1000/api/v1/get-staff/${appointment.doctorId}`,
+              `${apiUrl}/api/v1/get-staff/${appointment.doctorId}`,
               { headers }
             );
 

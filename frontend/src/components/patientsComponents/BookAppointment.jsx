@@ -26,6 +26,7 @@ const BookAppointment = () => {
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   const headers = {
     id: localStorage.getItem("userId"),
@@ -38,7 +39,7 @@ const BookAppointment = () => {
     const fetchDoctors = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:1000/api/v1/get-doctor-data"
+          `${apiUrl}/api/v1/get-doctor-data`
         );
         setDoctors(response.data.doctors || []);
       } catch (error) {
@@ -50,7 +51,7 @@ const BookAppointment = () => {
       const patientIdFromStorage = localStorage.getItem("userId");
       try {
         const response = await axios.get(
-          `http://localhost:1000/api/v1/patient/${patientIdFromStorage}`
+          `${apiUrl}/api/v1/patient/${patientIdFromStorage}`
         );
         const patient = response.data.patient || {};
         setPatientName(patient.name || "");
@@ -84,7 +85,7 @@ const BookAppointment = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:1000/api/v1/book-appointment",
+        `${apiUrl}/api/v1/book-appointment`,
         appointmentData,
         { headers }
       );

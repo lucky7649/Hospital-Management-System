@@ -12,12 +12,13 @@ const DoctorProfile = () => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const apiUrl = process.env.REACT_APP_API_BASE_URL;
 
   useEffect(() => {
     const fetchDoctor = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1000/api/v1/get-staff/${id}`
+          `${apiUrl}/api/v1/get-staff/${id}`
         );
         setData(response.data.data);
         setLoading(false);
@@ -41,7 +42,7 @@ const DoctorProfile = () => {
         <div className="flex flex-col  md:flex-row gap-3 items-start w-full">
           <Avatar
             name={data?.name}
-            src={`http://localhost:1000/uploads/${data?.profileImg}`}
+            src={`${apiUrl}/uploads/${data?.profileImg}`}
             className="rounded-xl shadow-sm self-center"
             size="300"
           />
