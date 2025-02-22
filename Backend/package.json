@@ -10,6 +10,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@google/generative-ai": "^0.21.0",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
@@ -22,7 +23,10 @@
     "nodemailer": "^6.9.16",
     "nodemon": "^3.1.9",
     "path": "^0.12.7",
+    "pdf-parse": "^1.1.1",
+    "react-markdown": "^9.0.3",
     "socket.io": "^4.8.1",
+    "tesseract.js": "^6.0.0",
     "twilio": "^5.3.6"
   }
 }

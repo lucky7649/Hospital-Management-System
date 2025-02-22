@@ -27,6 +27,8 @@ import LanguageSelector from './components/GoogleTranslate/languageSelector';
 import RoomPage from './pages/VideoRoom';
 import LobbyScreen from './pages/VideoCallLobby';
 import { ActiveSectionProvider } from './context/ActiveSectionContext';
+import SidePannelChatBot from './components/CommanComponents/SidePannelChatBot';
+import { SidePanelProvider } from './context/sidePannelContext';
 
 
 
@@ -48,8 +50,10 @@ function App() {
     <div className="">
       <Toaster />
       <GoogleTranslate />
+      <SidePanelProvider>
 <ActiveSectionProvider>
-      <Navbar />
+        <Navbar />
+        <SidePannelChatBot/>
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/all-doctors" element={<AllDoctors />} />
@@ -76,7 +80,8 @@ function App() {
         <Route path="/LogIn" element={<LogIn />} />
       </Routes>
         <Footer />
-      </ActiveSectionProvider>
+        </ActiveSectionProvider>
+      </SidePanelProvider>
     </div>
   );
 }

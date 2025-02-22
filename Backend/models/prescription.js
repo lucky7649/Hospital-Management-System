@@ -9,29 +9,34 @@ const prescriptionSchema = new mongoose.Schema(
     },
     doctorId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Doctor", // References the Doctor collection
+      ref: "Doctor", 
+      required: true,
+    },
+    queueId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Queue", 
       required: true,
     },
     medicines: [
       {
         name: {
           type: String,
-          required: true, 
+          required: true,
         },
         dosage: {
           type: String,
-          required: true, 
+          required: true,
         },
         frequency: {
           type: String,
-          required: true, 
+          required: true,
         },
         duration: {
           type: String,
-          required: true, 
+          required: true,
         },
         notes: {
-          type: String, 
+          type: String,
           default: "",
         },
       },
@@ -42,11 +47,11 @@ const prescriptionSchema = new mongoose.Schema(
     },
     isDeleted: {
       type: Boolean,
-      default: false, 
+      default: false,
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

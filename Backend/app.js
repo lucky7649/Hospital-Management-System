@@ -14,6 +14,7 @@ const Queue = require("./routes/queue");
 const staff = require("./routes/staff");
 const Room = require("./routes/room");
 const Prescription = require("./routes/prescription");
+const GeminiRoutes = require("./routes/geminiRoute");
 const initializeSocketServer = require("./socketConnections/socket");
 
 app.use(cors());
@@ -24,6 +25,8 @@ app.use("/api/v1", Room);
 app.use("/api/v1", Queue);
 app.use("/api/v1", staff);
 app.use("/api/v1", Prescription);
+app.use("/api/v1", GeminiRoutes);
+
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 

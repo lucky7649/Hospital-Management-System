@@ -145,7 +145,7 @@ const HospitalInfo = ({data}) => {
               </div>
             </div>
 
-            {/* Footer */}
+           
             <div className="text-center border-t pt-4">
               <button className="px-6 py-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition duration-300">
                 Contact Doctor

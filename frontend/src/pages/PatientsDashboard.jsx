@@ -11,6 +11,8 @@ import AppointmentsPage from "../components/patientsComponents/appointmentsPage"
 import BookAppointment from "../components/patientsComponents/BookAppointment";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { useActiveSection } from "../context/ActiveSectionContext";
+import Prescriptions from "../components/patientsComponents/Prescriptions";
+import { FaFilePrescription } from "react-icons/fa6";
 
 // Lazy loading components
 const Dashboard = lazy(() =>
@@ -71,7 +73,8 @@ const PatientDashboard = () => {
         return <AppointmentsPage user={user} />;
       case "book-appointments":
         return <BookAppointment user={user} />;
-
+      case "prescriptions":
+        return <Prescriptions/>;
       case "check-bed-availability":
         return <BedChecking />;
       default:
@@ -90,6 +93,11 @@ const PatientDashboard = () => {
       label: "Book Appointments",
       icon: <FaRegCalendarCheck />,
       key: "book-appointments",
+    },
+    {
+      label: "Prescriptions",
+      icon: <FaFilePrescription />,
+      key: "prescriptions",
     },
     {
       label: "Check Beds Availability",

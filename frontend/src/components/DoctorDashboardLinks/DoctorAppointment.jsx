@@ -323,8 +323,8 @@ const handleStartCall = (roomId) => {
                       <p className="text-sm font-semibold">#{idx + 1}</p>
                     </div>
                     <Avatar
-                      name={appointment.patientId.name}
-                      src={appointment?.patientId.avatar}
+                      name={appointment?.patientId?.name}
+                      src={appointment?.patientId?.avatar}
                       round={true}
                       size="40"
                       className="shadow-sm"
@@ -332,7 +332,7 @@ const handleStartCall = (roomId) => {
 
                     <div className="ml-3">
                       <h3 className="text-lg font-medium text-gray-700">
-                        {appointment?.patientId.name || "Unknown"}
+                        {appointment?.patientId?.name || "Unknown"}
                       </h3>
                       <p className="text-sm text-gray-500">
                         {appointment?.email || "N/A"}

@@ -175,9 +175,7 @@ export default function AppointmentsPage() {
                     .map((appt, index) => (
                       <tr
                         key={index}
-                        onClick={() =>
-                          navigate(`/video-call-lobby/${appt.roomId}`)
-                        }
+                      
                         className="border-b hover:bg-gray-50 cursor-pointer"
                       >
                         <td className="py-4 px-4 text-sm">
@@ -234,17 +232,15 @@ export default function AppointmentsPage() {
                           </div>
                         </td>
                         <td className="relative text-center">
-                          <button
-                            className="p-2"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setOpenDropdown(
-                                openDropdown === index ? null : index
-                              );
-                            }}
-                          >
-                            <FiMoreVertical />
-                          </button>
+                          {appt.mode === "online" ? (
+                            <button
+                              className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 rounded-lg transition duration-200"
+                              onClick={() =>
+                                navigate(`/video-call-lobby/${appt.roomId}`)
+                              }
+                            >
+                              Join Call
+                            </button>):<FiMoreVertical onClick={()=>setOpenDropdown(true)}/>}
                           {openDropdown === index && (
                             <div className="absolute right-0 mt-2 z-50 w-48 bg-white shadow-lg rounded-lg p-2">
                               {[

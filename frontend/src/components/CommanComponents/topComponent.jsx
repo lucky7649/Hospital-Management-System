@@ -16,7 +16,7 @@ const AutomationAnalytics = ({ data }) => {
       title: "Total Rooms",
       value: totalRooms, // Number of rooms
       description: "Rooms available in the system",
-      icon: <MdMeetingRoom />, // Replace with your preferred icon or SVG
+      icon: <MdMeetingRoom />, 
       bgColor: "bg-blue-100",
       iconColor: "text-blue-500",
 
