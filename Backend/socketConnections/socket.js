@@ -3,7 +3,7 @@ const { Server } = require("socket.io");
 const initializeSocketServer = (PORT) => {
   const io = new Server(PORT, {
     cors: {
-      origin: "https://medicare-hms.vercel.app",
+      origin: ["http://localhost:3000", "https://medicare-hms.vercel.app"],
       methods: ["GET", "POST"],
     },
   });

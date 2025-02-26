@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-// Define schema for the staff
+
 const StaffSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -56,7 +56,7 @@ const StaffSchema = new mongoose.Schema({
     trim: true,
     validate: {
       validator: function (value) {
-        // Specialization is required only if the role is 'doctor'
+
         if (this.role === "doctor" && !value) {
           throw new Error("Specialization is required for doctors");
         }
@@ -73,7 +73,7 @@ const StaffSchema = new mongoose.Schema({
     min: [0, "Experience must be a positive number"],
     validate: {
       validator: function (value) {
-        // Experience is required only if the role is 'doctor'
+
         if (this.role === "doctor" && value === undefined) {
           throw new Error("Experience is required for doctors");
         }
@@ -87,7 +87,7 @@ const StaffSchema = new mongoose.Schema({
     trim: true,
     validate: {
       validator: function (value) {
-        // Qualification is required only if the role is 'doctor'
+
         if (this.role === "doctor" && !value) {
           throw new Error("Qualification is required for doctors");
         }
@@ -103,7 +103,7 @@ const StaffSchema = new mongoose.Schema({
     unique: true,
     validate: {
       validator: function (value) {
-        // Only make registrationNo required if the role is 'doctor'
+  
         if (this.role === "doctor" && !value) {
           throw new Error("Registration number is required for doctors");
         }
@@ -113,9 +113,34 @@ const StaffSchema = new mongoose.Schema({
     },
   },
   languages: {
-    type: [String], // Array of strings to store multiple languages
+    type: [String], 
   },
-
+ timeSlots: [
+    {
+      day: {
+        type: String,
+  
+      },
+      inPersonSlots: [
+        {
+          time: String,
+          isBooked: {
+            type: Boolean,
+            default: false
+          }
+        }
+      ],
+      onlineSlots: [
+        {
+          time: String,
+          isBooked: {
+            type: Boolean,
+            default: false
+          }
+        }
+      ]
+    }
+  ],
 
   city: { type: String, trim: true },
   state: { type: String, trim: true },
@@ -127,8 +152,8 @@ const StaffSchema = new mongoose.Schema({
  
   status: {
     type: String,
-    enum: ["active", "inactive"], // Restrict to allowed values
-    default: "inactive", // Default status when a user is created
+    enum: ["active", "inactive"], 
+    default: "inactive", 
     
   },
   createdAt: {
@@ -142,7 +167,7 @@ const StaffSchema = new mongoose.Schema({
   },
 });
 
-// Pre-save middleware to automatically update the `updatedAt` field
+
 StaffSchema.pre("save", function (next) {
   this.updatedAt = Date.now();
   next();

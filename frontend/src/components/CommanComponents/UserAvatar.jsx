@@ -113,7 +113,7 @@ const UserProfile = () => {
       {/* Hover card */}
       {hover && (
         <div
-          className="absolute top-10 right-0 w-36 flex flex-col gap-1 bg-white shadow-lg rounded-md p-2 z-10"
+          className="absolute top-15 right-0 w-36 flex flex-col gap-1 bg-white shadow-lg rounded-md p-2 z-10"
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           onClick={() => setHover(false)}
@@ -121,15 +121,15 @@ const UserProfile = () => {
         >
           <Link
             to="/profile"
-            className="text-sm font-medium w-full text-gray-700 cursor-pointer p-2 bg-gray-100 hover:bg-gray-200 rounded"
+            className="text-sm flex items-center justify-start font-medium w-full text-gray-600 cursor-pointer p-2  hover:bg-gray-100 rounded"
           >
-            View Profile
+            My Profile
           </Link>
           <button
             onClick={() => {
               handleLogout();
             }}
-            className="text-sm font-medium w-full text-gray-700 cursor-pointer p-2 bg-gray-100 hover:bg-gray-200 rounded"
+            className="text-sm font-medium w-full flex items-center justify-start text-gray-600 cursor-pointer p-2  hover:bg-gray-100 rounded"
           >
             Logout
           </button>

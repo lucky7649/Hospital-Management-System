@@ -80,7 +80,7 @@ const AllDoctor = () => {
 
 
   return (
-    <div className="container flex flex-col md:flex-row gap-2 mx-auto px-4 pt-2 md:pt-10 bg-gray-50">
+    <div className=" flex flex-col md:flex-row gap-2  px-4 pt-2 md:pt-10 bg-gray-50">
       <div className="w-full md:w-2/6 h-fit md:h-screen md:p-4 flex flex-col gap-4">
         <h1 className="text-2xl md:text-3xl hidden md:block font-semibold text-blue-600 text-center">
           Best Doctors in India

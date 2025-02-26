@@ -195,7 +195,7 @@ const apiUrl = process.env.REACT_APP_API_BASE_URL;
           {/* Upcoming Appointments */}
           <div className="w-1/2 py-4">
             <div className="bg-white border border-gray-300 rounded-xl  p-2 ">
-              <h1 className="font-semibold text-xl text-gray-500 mt-2 mb-2">
+              <h1 className="font-semibold text-lg text-gray-500  mb-2">
                 Upcoming Appointments
               </h1>
               <div className="w-full h-[35vh] overflow-y-scroll">
@@ -217,9 +217,9 @@ const apiUrl = process.env.REACT_APP_API_BASE_URL;
                           <div className="flex gap-3">
                             <Avatar
                               name={appt?.doctor?.name}
-                              src={`${apiUrl}/uploads/${appt?.doctor?.profileImg}`}
+                              src={appt?.doctor?.profileImg}
                               size="50"
-                              className="rounded-xl"
+                              className="rounded-lg"
                             />
                             <div>
                               <h3 className="text-lg font-semibold">
@@ -248,9 +248,11 @@ const apiUrl = process.env.REACT_APP_API_BASE_URL;
                       </div>
                     ))
                 ) : (
-                  <div className="w-full h-[40vh] flex items-center justify-center text-gray-500">
+                  <div className="w-full h-[40vh] text-gray-400 flex items-center justify-center flex-col gap-2">
                     <AiOutlineFileSearch size={70} />
-                    <p>No Appointments Found</p>
+                    <p className="text-center text-gray-500">
+                      No Appointments Found
+                    </p>
                   </div>
                 )}
               </div>

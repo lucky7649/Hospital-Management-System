@@ -2,6 +2,7 @@ import React from "react";
 import TopAdminDash from "../AdminDashbordLinks/AdminComponents/TopAdminDash";
 import Calendar from "../CommanComponents/Calendar";
 import WorkingHoursChart from "../AdminDashbordLinks/AdminComponents/Chart";
+import TimeSlotForm from "./timeSlotForm";
 
 const DoctorOverview = ({ doctor }) => {
   return (
@@ -24,7 +25,9 @@ const DoctorOverview = ({ doctor }) => {
               <TopAdminDash />
               <WorkingHoursChart />
             </div>
-            <div className="w-full h-80 rounded shadow-lg p-3">hello</div>
+            <div className="w-full h-80 rounded shadow-lg p-3">
+              <TimeSlotForm/>
+            </div>
           </div>
 
           <div className="w-fit  h-full">

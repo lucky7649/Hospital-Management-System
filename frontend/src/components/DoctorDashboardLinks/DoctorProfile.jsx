@@ -42,7 +42,7 @@ const DoctorProfile = () => {
         <div className="flex flex-col  md:flex-row gap-3 items-start w-full">
           <Avatar
             name={data?.name}
-            src={`${apiUrl}/uploads/${data?.profileImg}`}
+            src={data?.profileImg}
             className="rounded-xl shadow-sm self-center"
             size="300"
           />

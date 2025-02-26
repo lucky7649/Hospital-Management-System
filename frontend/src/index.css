@@ -44,3 +44,27 @@
 .delay-2000 {
   animation-delay: 2s;
 }
+
+.react-datepicker__day--selected {
+  @apply bg-blue-500 text-white;
+}
+
+.react-datepicker__day--keyboard-selected {
+  @apply bg-blue-400 text-white;
+}
+
+.react-datepicker__day--today {
+  @apply font-bold text-blue-600;
+}
+
+.react-datepicker__header {
+  @apply bg-blue-500 text-white;
+}
+
+.react-datepicker__current-month {
+  @apply font-semibold;
+}
+
+.react-datepicker__day:hover {
+  @apply bg-blue-100;
+}

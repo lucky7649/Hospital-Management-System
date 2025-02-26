@@ -12,11 +12,13 @@ import { FiBell } from "react-icons/fi";
 import { NavLink } from "react-router-dom";
 import { useActiveSection } from "../../context/ActiveSectionContext";
 import { useSidePanel } from "../../context/sidePannelContext"
-import { LuBot } from "react-icons/lu";
+import { SiGooglegemini } from "react-icons/si";
+
 
 
 const Navbar = () => {
-    const { toggleSidePanel } = useSidePanel();
+  const { toggleSidePanel } = useSidePanel();
+  
   const Links = {
     DefaultLinks: [
       { title: "Home", url: "/", icon: <AiOutlineHome /> },
@@ -95,40 +97,38 @@ const Navbar = () => {
         <div className="nav-links-hospital block md:flex gap-6 items-center">
           <div className="hidden md:flex gap-2">
             {roleLinks.map((item, index) => (
-              <NavLink
-                to={item.url}
-                key={index}
-                className={({ isActive }) =>
-                  `relative px-3 py-1 text-base font-medium transition-all duration-300 rounded-md 
-              ${
-                isActive
-                  ? "text-blue-600 bg-blue-200 border-b-2 border-blue-500 "
-                  : "text-gray-600 hover:text-blue-500 hover:bg-gray-100"
-              }`
-                }
-              >
-                {item.title}
-              
-                {({ isActive }) =>
-                  isActive && (
-                    <span className="absolute left-0 bottom-0 w-full h-1 bg-blue-500 rounded-full transition-all duration-300"></span>
-                  )
-                }
-              </NavLink>
+              <div key={index} className="relative">
+                <NavLink
+                  to={item.url}
+                  className={({ isActive }) =>
+                    `relative px-3 py-1 text-base font-medium transition-all duration-300 rounded-md 
+        ${
+          isActive
+            ? "text-blue-600 bg-blue-200 border-b-2 border-blue-500"
+            : "text-gray-600 hover:text-blue-500 hover:bg-gray-100"
+        }`
+                  }
+                >
+                  {item.title}
+                </NavLink>
+              </div>
             ))}
           </div>
-          <button
-            onClick={toggleSidePanel}
-            className="px-3 py-2  flex gap-2 items-center border-blue-500 bg-gray-200 rounded hover:bg-blue-500 hover:text-white transition-all duration-300"
-          >
-            AI Health assistant
-          </button>
+
           <div className="hidden md:flex gap-6">
             {userRole === "patient" && (
               <button
+                onClick={toggleSidePanel}
+                className="px-3 py-1  flex  gap-1 items-center border border-purple-500 text-purple-600 bg-purple-100  hover:bg-purple-200 rounded-full transition-all duration-300"
+              >
+                Ask AI <SiGooglegemini />
+              </button>
+            )}
+            {userRole === "patient" && (
+              <button
                 onClick={() => {
-                  setActiveSection("book-appointments"); 
-                  navigate("/patient-dashboard"); 
+                  setActiveSection("book-appointments");
+                  navigate("/patient-dashboard");
                 }}
                 className="px-3 py-2 border-blue-500 bg-gray-200 rounded hover:bg-blue-500 hover:text-white transition-all duration-300"
               >
@@ -156,7 +156,16 @@ const Navbar = () => {
             )}
           </div>
           <div className="flex items-center gap-2">
+            {userRole === "patient" && (
+              <button
+                onClick={toggleSidePanel}
+                className="px-3 py-1  flex md:hidden  gap-1 items-center border border-purple-500 text-purple-600 bg-purple-100  hover:bg-purple-200 rounded-full transition-all duration-300"
+              >
+                Ask AI <SiGooglegemini />
+              </button>
+            )}
             {isLoggedIn && <UserProfile />}
+
             <button
               className="block md:hidden text-gray-700 text-2xl hover:text-black"
               onClick={() => setMobileNavVisible(!isMobileNavVisible)}
@@ -167,7 +176,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-   
       <div
         className={`${
           isMobileNavVisible
@@ -189,7 +197,7 @@ const Navbar = () => {
             </Link>
           ))}
 
-          {/* Book Appointment Button */}
+   
           <Link
             to="/book-appointment"
             onClick={() => setMobileNavVisible(false)}
@@ -198,7 +206,7 @@ const Navbar = () => {
             Book Appointment
           </Link>
 
-          {/* Authentication Buttons */}
+
           {!isLoggedIn ? (
             <Link
               to="/login"

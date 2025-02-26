@@ -12,7 +12,7 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
-// Function to send SMS
+
 
 
 
@@ -46,95 +46,18 @@ router.post("/send-sms", async (req, res) => {
 
 
 
-// router.post("/book-appointment", authenticateToken, async (req, res) => {
-//   try {
-//     const {
-//       doctorId,
-//       patientName,
-//       patientAge,
-//       gender,
-//       contactNumber,
-//       email,
-//       dateOfBirth,
-//       reasonForVisit,
-//       mode,
-//       appointmentDate,
-//     } = req.body;
 
-//     // Validate input
-//     if (
-//       !doctorId ||
-//       !patientName ||
-//       !patientAge ||
-//       !gender ||
-//       !contactNumber ||
-//       !reasonForVisit ||
-//       !mode ||
-//       !appointmentDate
-//     ) {
-//       return res.status(400).json({ message: "All fields are required." });
-//     }
 
-//     // Check if the doctor exists
-//     const doctor = await Doctor.findById(doctorId);
-//     if (!doctor) {
-//       return res.status(404).json({ message: "Doctor not found." });
-//     }
-
-  
-//     const queueEntry = new Queue({
-//       doctorId,
-//       patientId: req.user.id, // Ensure `req.user` is populated by authentication middleware
-//       patientName,
-//       patientAge,
-//       gender,
-//       contactNumber,
-//       email,
-//       dateOfBirth,
-//       reasonForVisit,
-//       status: "pending",
-//       mode,
-//       appointmentDate,
-//       priority: false, // Set priority to false by default
-//     });
-
-     
-//   await Patient.findByIdAndUpdate(req.user.id, {
-//     $push: { appointments: queueEntry._id },
-//   });
-//     await queueEntry.save();
-
-//     res
-//       .status(201)
-//       .json({ message: "Appointment booked successfully.", queueEntry });
-//   } catch (error) {
-//     console.error("Error booking appointment:", error);
-//     res.status(500).json({ message: "Internal Server Error", error });
-//   }
-// });
 
 router.post("/book-appointment", authenticateToken, async (req, res) => {
   try {
-    const {
-      doctorId,
-      patientName,
-      patientAge,
-      gender,
-      contactNumber,
-      email,
-      dateOfBirth,
-      reasonForVisit,
-      mode, // Online or Offline
-      appointmentDate,
-    } = req.body;
+    const { doctorId, reasonForVisit, timeSlot, mode, appointmentDate } =
+      req.body;
 
     // Validate input
     if (
       !doctorId ||
-      !patientName ||
-      !patientAge ||
-      !gender ||
-      !contactNumber ||
+      !timeSlot ||
       !reasonForVisit ||
       !mode ||
       !appointmentDate
@@ -142,43 +65,63 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    // Check if the doctor exists
+    // Validate ObjectId format for doctorId
+    if (!mongoose.Types.ObjectId.isValid(doctorId)) {
+      return res.status(400).json({ message: "Invalid doctor ID." });
+    }
+
+    // Validate appointmentDate (should not be in the past)
+ const currentDate = new Date();
+currentDate.setHours(0, 0, 0, 0); // Reset time to 00:00:00
+const selectedDate = new Date(appointmentDate);
+if (selectedDate < currentDate) {
+  return res
+    .status(400)
+    .json({ message: "Appointment date cannot be in the past." });
+    }
+    
     const doctor = await Doctor.findById(doctorId);
     if (!doctor) {
       return res.status(404).json({ message: "Doctor not found." });
     }
 
-    // Generate a roomId only if it's an online appointment
+
+  const isSlotBooked = await Queue.findOne({
+  doctorId,
+  timeSlot,
+  appointmentDate,
+  status: { $ne: "Cancelled" }, // Exclude cancelled appointments
+});
+
+    if (isSlotBooked) {
+      return res.status(409).json({ message: "Time slot is already booked." });
+    }
+
     let roomId = null;
     if (mode === "online") {
       roomId = `${doctorId}-${req.user.id}-${Date.now()}`;
     }
 
-    // Create a new queue entry (appointment)
+    
     const queueEntry = new Queue({
       doctorId,
       patientId: req.user.id,
-      patientName,
-      patientAge,
-      gender,
-      contactNumber,
-      email,
-      dateOfBirth,
       reasonForVisit,
       status: "Pending",
       mode,
+      timeSlot,
       appointmentDate,
       priority: false,
-      roomId, // Save the roomId for online patients
+      roomId,
     });
 
-    // Save appointment reference in patient's record
-    await Patient.findByIdAndUpdate(req.user.id, {
-      $push: { appointments: queueEntry._id },
-    });
 
-    // Save the queue entry (appointment)
-    await queueEntry.save();
+    await Promise.all([
+      Patient.findByIdAndUpdate(req.user.id, {
+        $push: { appointments: queueEntry._id },
+      }),
+      queueEntry.save(),
+    ]);
 
     res.status(201).json({
       message: "Appointment booked successfully.",
@@ -190,6 +133,8 @@ router.post("/book-appointment", authenticateToken, async (req, res) => {
   }
 });
 
+
+
 router.get("/appointments/:id", authenticateToken, async (req, res) => {
   try {
     const { id } = req.params;
@@ -200,12 +145,9 @@ router.get("/appointments/:id", authenticateToken, async (req, res) => {
     }
 
     const doctorId = id;
-    const appointments = await Queue.find({ doctorId }).populate(
-      "patientId",
-      ["name", "age", "avatar", "email", "phone", "city", "state", "country", "prescription", "medicalHistory", "gender", "dateOfBirth", "street", "username"]
-    );
-     
-
+    const appointments = await Queue.find({ doctorId })
+      .populate("patientId") // Populate all fields for patient
+      .populate("doctorId"); // Populate all fields for doctor
 
     if (!appointments.length) {
       return res
@@ -215,10 +157,11 @@ router.get("/appointments/:id", authenticateToken, async (req, res) => {
 
     res.json({ success: true, data: appointments });
   } catch (error) {
-    console.error(`Error fetching appointments for doctor ID :`, error);
+    console.error(`Error fetching appointments for doctor ID:`, error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 });
+
 
 router.get("/find-patient-appointments/:id", authenticateToken, async (req, res) => {
   try {
@@ -230,7 +173,9 @@ router.get("/find-patient-appointments/:id", authenticateToken, async (req, res)
     }
 
     const patientId = id;
-    const appointments = await Queue.find({ patientId });
+    const appointments = await Queue.find({ patientId })
+      .populate("patientId", "name age gender");
+    
 
     if (!appointments.length) {
       return res

@@ -23,7 +23,7 @@ const mongoose = require("mongoose");
 const QueueSchema = new mongoose.Schema({
   doctorId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Doctor",
+    ref: "Staff",
     required: true,
   },
   patientId: {
@@ -31,31 +31,15 @@ const QueueSchema = new mongoose.Schema({
     ref: "Patient",
     required: true,
   },
-  patientName: {
-    type: String,
-    required: true,
-    trim: true,
+
+  timeSlot: {
+   type: String,
   },
-  patientAge: {
-    type: Number,
-    required: true,
+  transactionId: {
+    type:String,
+
   },
-  gender: {
-    type: String,
-    enum: ["Male", "Female", "Other"],
-    required: true,
-  },
-  contactNumber: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    trim: true,
-  },
-  dateOfBirth: {
-    type: Date,
-  },
+ 
   reasonForVisit: {
     type: String,
     required: true,

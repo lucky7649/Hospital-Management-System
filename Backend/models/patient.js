@@ -93,13 +93,7 @@ const PatientSchema = new mongoose.Schema({
   },
   dateOfBirth: {
     type: Date,
-    validate: {
-      validator: function (value) {
-        return value <= new Date();
-      },
-      message: "Date of birth must be a past date",
-    },
-  },
+   },
   profileImg: {
     type: String,
   },

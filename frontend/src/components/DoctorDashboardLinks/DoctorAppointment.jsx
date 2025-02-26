@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AiFillSchedule } from "react-icons/ai";
+import { AiFillSchedule, AiOutlineFileSearch } from "react-icons/ai";
 import { FaUser } from "react-icons/fa6";
 import { HiUser } from "react-icons/hi2";
 import { MdOutlinePendingActions } from "react-icons/md";
@@ -20,7 +20,7 @@ const DoctorAppointment = () => {
   const [activeTab, setActiveTab] = useState("in-person");
 
 
-  const patientId = selectedPatient?._id;
+  const patientId = selectedPatient;
   const doctorId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_BASE_URL;
@@ -48,6 +48,7 @@ const DoctorAppointment = () => {
       );
 
       if (response.data && response.data.data) {
+      
         setAppointments(response.data.data);
       } else {
         console.error("Unexpected response structure:", response.data);
@@ -64,6 +65,11 @@ const DoctorAppointment = () => {
   useEffect(() => {
     fetchAppointments();
   }, []);
+
+
+
+
+  
 
   const handleRefresh = async () => {
     await fetchAppointments(); // Ensure appointments are fresh
@@ -97,7 +103,7 @@ const DoctorAppointment = () => {
         setSelectedAppointment(nextAppointment._id);
 
         if (
-          nextAppointment.status === "waiting" &&
+          nextAppointment.status.toLowerCase() === "pending" &&
           !notifiedPatients.has(nextAppointment._id)
         ) {
           const message = `Hello ${nextAppointment.patientId.name}, your appointment is up. Please proceed to the consultation.`;
@@ -153,30 +159,47 @@ const DoctorAppointment = () => {
       </div>
     );
   }
+      const formatDate = (isoString) => {
+        const date = new Date(isoString);
+        return date.toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        });
+      };
 
 
-   
-  const formattedDateOfBirth = selectedPatient?.dateOfBirth
-    ? new Date(selectedPatient.dateOfBirth).toISOString().split("T")[0]
-    : "N/A";
+  const today = new Date();
+  const todaysAppointments = appointments.filter((appointment) => {
+    const appointmentDate = new Date(appointment.appointmentDate);
+    return (
+      appointmentDate.getDate() === today.getDate() &&
+      appointmentDate.getMonth() === today.getMonth() &&
+      appointmentDate.getFullYear() === today.getFullYear()
+    );
+  });
 
-  const PendingAppointments = appointments?.filter(
-    (appointment) => appointment.status === "waiting"
+  const PendingAppointments = todaysAppointments.filter(
+    (appointment) => appointment.status.toLowerCase() === "pending"
   ).length;
-  const totalAppointments = appointments.length;
-  const CompletedAppointments = totalAppointments - PendingAppointments; //
-  const onlineAppointments = appointments.filter(
-    (appointment) =>
-      appointment?.mode === "online"
-  ).length; // Filter appointments with 'waitin
-const offlineAppointments = appointments.filter(
-  (appointment) => appointment?.mode === "in-person"
-  ).length; 
-  
-const handleStartCall = (roomId) => {
-  navigate(`/video-call/${roomId}`);
-};
 
+  const totalAppointments = todaysAppointments.length;
+
+  const CompletedAppointments = todaysAppointments.filter(
+    (appointment) => appointment.status === "completed"
+  ).length;
+
+  const onlineAppointments = todaysAppointments.filter(
+    (appointment) => appointment.mode === "online"
+  ).length;
+
+  const offlineAppointments = todaysAppointments.filter(
+    (appointment) => appointment.mode === "in-person"
+  ).length;
+
+  const handleStartCall = (roomId) => {
+    navigate(`/video-call/${roomId}`);
+  };
 
   const analyticsCards = [
     {
@@ -248,9 +271,9 @@ const handleStartCall = (roomId) => {
     }
   };
   return (
-    <div className="flex h-screen bg-gray-100 ">
+    <div className="flex gap-2 h-full bg-gray-100 ">
       {/* Left Sidebar */}
-      <div className="w-1/4 bg-gray-50 border-r p-4 overflow-y-auto fixed h-[90vh]">
+      <div className="w-[400px] bg-gray-50 border-r p-4 overflow-y-auto ">
         {/* Header */}
         <div className="flex justify-between items-center mb-3">
           <h2 className="text-lg md:text-2xl font-semibold text-blue-500">
@@ -306,131 +329,144 @@ const handleStartCall = (roomId) => {
           </div>
         </div>
         <div className="w-full h-[45vh] border-2 rounded-lg border-gray-300 overflow-y-scroll p-2 bg-gray-100">
-          {appointments
-            .filter(
-              (appointment) =>
-                appointment?.status === "Pending" &&
-                appointment?.mode === activeTab
-            ) // Filter appointments with 'waiting' status
-            .map((appointment, idx) => (
-              <div
-                key={idx}
-                className="flex flex-col bg-white shadow-md mb-3 rounded-lg p-4 space-y-3 hover:shadow-lg transition duration-300"
-              >
-                {/* Header */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 flex items-center justify-center bg-green-200 text-green-600 rounded-lg">
-                      <p className="text-sm font-semibold">#{idx + 1}</p>
+          {appointments.length > 0 ? (
+            appointments
+              .filter((appointment) => {
+                const appointmentDate = new Date(appointment.appointmentDate);
+                const today = new Date();
+                return (
+                  appointment?.status === "Pending" &&
+                  appointment?.mode === activeTab &&
+                  appointmentDate.getDate() === today.getDate() &&
+                  appointmentDate.getMonth() === today.getMonth() &&
+                  appointmentDate.getFullYear() === today.getFullYear()
+                );
+              })
+              .map((appointment, idx) => (
+                <div
+                  key={idx}
+                  className="flex flex-col bg-white shadow-md mb-3 rounded-lg p-4 space-y-3 hover:shadow-lg transition duration-300"
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 flex items-center justify-center bg-green-200 text-green-600 rounded-lg">
+                        <p className="text-sm font-semibold">#{idx + 1}</p>
+                      </div>
+                      <Avatar
+                        name={appointment?.patientName}
+                        src={appointment?.patientId?.profileImg}
+                        round={true}
+                        size="40"
+                        className="shadow-sm"
+                      />
+                      <div className="ml-3">
+                        <h3 className="text-lg font-medium text-gray-700">
+                          {appointment?.patientName || "Unknown"}
+                        </h3>
+                        <p className="text-sm text-gray-500">
+                          {appointment?.email || "N/A"}
+                        </p>
+                      </div>
                     </div>
-                    <Avatar
-                      name={appointment?.patientId?.name}
-                      src={appointment?.patientId?.profileImg}
-                      round={true}
-                      size="40"
-                      className="shadow-sm"
-                    />
-
-                    <div className="ml-3">
-                      <h3 className="text-lg font-medium text-gray-700">
-                        {appointment?.patientId?.name || "Unknown"}
-                      </h3>
-                      <p className="text-sm text-gray-500">
-                        {appointment?.email || "N/A"}
-                      </p>
-                    </div>
+                    <button className="text-gray-400 hover:text-gray-600">
+                      <FaEllipsisH />
+                    </button>
                   </div>
-                  <button className="text-gray-400 hover:text-gray-600">
-                    <FaEllipsisH />
-                  </button>
-                </div>
 
-                {/* Status Badge */}
-                <div className="flex items-center justify-between">
-                  <div className="flex gap-2">
-                    <span
-                      className={`px-3 py-1 rounded-lg text-sm font-semibold ${
-                        appointment?.status === "completed"
-                          ? "bg-green-100 text-green-600"
-                          : "bg-yellow-100 text-yellow-600"
-                      }`}
-                    >
-                      {appointment?.status || "Pending"}
-                    </span>
-                    <span
-                      className={`px-3 py-1 rounded-lg text-sm font-semibold ${
-                        appointment?.mode === "online"
-                          ? "bg-green-100 text-green-600"
-                          : "bg-gray-200  text-gray-600"
-                      }`}
-                    >
-                      {appointment?.mode || "in-person"}
-                    </span>
-                    {appointment?.mode === "online" ? (
-                      <button
-                        onClick={() =>
-                          navigate(
-                            `/video-call-lobby/${appointment?.roomId}`
-                          )
-                        }
-                        className="px-3 py-1 rounded-lg text-sm font-semibold bg-green-100 text-green-600"
+                  {/* Reason for Visit and Age */}
+                  <div className="text-gray-600">
+                    <p>
+                      <span className="font-semibold">Reason for Visit:</span>{" "}
+                      {appointment?.reasonForVisit || "Not specified"}
+                    </p>
+                    <p>
+                      <span className="font-semibold">Age:</span>{" "}
+                      {appointment?.patientAge || "N/A"}
+                    </p>
+                  </div>
+
+                  {/* Status Badge */}
+                  <div className="flex items-center justify-between">
+                    <div className="flex gap-2">
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          appointment?.status === "completed"
+                            ? "bg-green-100 text-green-600 border border-green-500"
+                            : "bg-yellow-100 text-yellow-600 border border-yellow-500"
+                        }`}
                       >
-                        Start Call 
-                      </button>
-                    ) : (
-                      <p></p>
-                    )}
-                  </div>
+                        {appointment?.status || "Pending"}
+                      </span>
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                          appointment?.mode === "online"
+                            ? "bg-green-100 text-green-500 border border-green-500"
+                            : "bg-blue-100  text-blue-500 border border-blue-500"
+                        }`}
+                      >
+                        {appointment?.mode || "in-person"}
+                      </span>
+                      {appointment?.mode === "online" ? (
+                        <button
+                          onClick={() =>
+                            navigate(`/video-call-lobby/${appointment?.roomId}`)
+                          }
+                          className="px-3 py-1 rounded-full text-sm font-semibold bg-blue-500 text-white"
+                        >
+                          Start Call
+                        </button>
+                      ) : (
+                        <p></p>
+                      )}
+                    </div>
 
-                  <button
-                    onClick={() => {
-                      setSelectedPatient(appointment.patientId);
-                      setSelectedAppointment(appointment._id);
-                    }}
-                    className="p-2 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200"
-                  >
-                    <FaArrowRight />
-                  </button>
+                    <button
+                      onClick={() => {
+                        setSelectedPatient(appointment?.patientId);
+                        setSelectedAppointment(appointment._id);
+                      }}
+                      className="p-2 bg-gray-100 rounded-full text-gray-500 hover:bg-gray-200"
+                    >
+                      <FaArrowRight />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+          ) : (
+            <div className="w-full h-[40vh] text-gray-400 flex items-center justify-center flex-col gap-2">
+              <AiOutlineFileSearch size={70} />
+              <p className="text-center text-gray-500">No Appointments Found</p>
+            </div>
+          )}
         </div>
       </div>
       {/* Main Content */}
-      <div className="flex-1 relative ml-[30%]  p-2">
-        <div className="fixed bottom-0 z-50 right-0 ml-[30%] w-[700px] bg-gray-50  p-2   flex justify-around">
-          <button
-            onClick={() => {
-              handelAppointmentComplete();
-              handleRefresh();
-              handleRefreshAndSendSMS();
-            }}
-            className="px-4 py-2 bg-green-500 text-white rounded"
-          >
-            Completed
-          </button>
-          <button className="px-4 py-2 bg-yellow-500 text-white rounded">
-            Skip
-          </button>
-          <button className="px-4 py-2 bg-red-500 text-white rounded">
-            Delete
-          </button>
-        </div>
-        <div className="w-full h-fit px-6 pb-32 rounded-lg bg-white">
+      <div className="flex-1 relative   p-2">
+        <div className="w-full h-fit px-6 py-2 rounded-lg bg-white">
           <h1 className="text-2xl text-blue-500 font-semibold mb-3">
             Patient Details
           </h1>
           {!selectedPatient ? (
-            <p>Patient not selected</p>
+            <div className="w-full h-[70vh] text-gray-400 flex items-center justify-center flex-col gap-2">
+              <img
+                src="/assets/doctor-appointments.jpg"
+                alt=""
+                className="w-1/2"
+              />
+              <p className="text-center text-gray-500">
+                No Appointments Selected
+              </p>
+            </div>
           ) : (
-            <div className="p-2 bg-gray-50 rounded-lg">
+            <div className="p-2 bg-gray-50 h-[70vh] overflow-y-scroll rounded-lg">
               <div className="flex items-center justify-between mb-6">
                 <div className="flex gap-4 items-start">
                   <Avatar
                     name={selectedPatient?.name}
-                    src={selectedPatient?.avatar}
-                    round={true}
-                    size="50"
+                    src={selectedPatient?.profileImg}
+                    className="rounded-lg object-contain bg-white  border border-gray-300"
+                    size="70"
                   />
 
                   <div>
@@ -447,9 +483,7 @@ const handleStartCall = (roomId) => {
                     <button
                       key={idx}
                       className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
-                    >
-                      <i className={`fas fa-${icon}`}></i>
-                    </button>
+                    ></button>
                   ))}
                 </div>
               </div>
@@ -464,16 +498,24 @@ const handleStartCall = (roomId) => {
                   <ul>
                     {[
                       { label: "Gender", value: selectedPatient.gender },
-                      { label: "DOB", value: formattedDateOfBirth },
+                      {
+                        label: "DOB",
+                        value: formatDate(selectedPatient.dateOfBirth),
+                      },
                       { label: "Age", value: selectedPatient?.age },
                       { label: "Phone", value: selectedPatient?.phone },
                       { label: "Email", value: selectedPatient.email },
+                      { label: "City", value: selectedPatient.city },
+                      { label: "State", value: selectedPatient.state },
+                      { label: "Country", value: selectedPatient.country },
+                     
+          
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-center justify-start">
                         <span className="text-blue-500 font-semibold">
                           {item.label}:
                         </span>
-                        <span className="ml-2 ">{item.value}</span>
+                        <span className="ml-2">{item.value}</span>
                       </li>
                     ))}
                   </ul>
@@ -512,6 +554,24 @@ const handleStartCall = (roomId) => {
               </div>
             </div>
           )}
+          <div className="  w-full  border-t border-gray-300 p-2 flex justify-around">
+            <button
+              onClick={() => {
+                handelAppointmentComplete();
+                handleRefresh();
+                handleRefreshAndSendSMS();
+              }}
+              className="px-4 py-2 bg-green-500 text-white rounded"
+            >
+              Completed
+            </button>
+            <button className="px-4 py-2 bg-yellow-500 text-white rounded">
+              Skip
+            </button>
+            <button className="px-4 py-2 bg-red-500 text-white rounded">
+              Delete
+            </button>
+          </div>
         </div>
       </div>
     </div>
