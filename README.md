@@ -27,11 +27,13 @@
 
 ## 📂 Project Repository  
 
-🔗 **[GitHub Repository](https://github.com/yashtupkar/New-HMS)**  
+🔗**[GitHub Repository](https://github.com/lucky7649/Hospital-Management-System)**
 
 ## 📌 Installation & Setup  
 
 1. **Clone the Repository**  
    ```sh
-   git clone https://github.com/yashtupkar/New-HMS.git
-   cd New-HMS
+   git clone https://github.com/lucky7649/Hospital-Management-System.git
+
+   cd Hospital-Management-System
+
